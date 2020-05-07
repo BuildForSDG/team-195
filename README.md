@@ -22,7 +22,6 @@
     6. [React and Docker](#react-and-docker)
     7. [Mocking react components](#mocking-react-components)
 
-<<<<<<< HEAD
 - [Part3](#part3)
     1. [Introduction](#part3-introduction)
     1. [Django Migrations](#django-migrate)
@@ -73,11 +72,4 @@ The environment files for each service in the .envs directory and add the requir
 ### <a name="docker-config"></a>Docker Config
 The docker yaml template we will be editing is. To use docker make sure that docker service is installed on your PC, linux or MaC.
 You can get the [docker Compose Docker Machine](https://docs.docker.com/)
-=======
-## Todo
-After adding Travis CI / or open CI
-1. Add backend app
-2. add frontend reactjs web application
-3. To add docker/nginx on kubernetes
->>>>>>> 68b87ccf9e0d8f2a90990700d49624cf34eda526
 
