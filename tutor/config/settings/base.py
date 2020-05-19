@@ -42,7 +42,10 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///tutor")
+    "default": env.db(
+        "DATABASE_URL",
+        default="psql://postgres:team-195@127.0.0.1:5432/gradeschool"
+    )
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
@@ -56,6 +59,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
+    'rest_framework',
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -75,6 +79,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "tutor.users.apps.UsersConfig",
+    "student.apps.StudentConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
