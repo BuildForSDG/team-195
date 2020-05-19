@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+import os
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # tutor/
@@ -23,7 +24,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
 # In Windows, this must be set to your system time zone.
-TIME_ZONE = "1"
+TIME_ZONE = "UTC"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "en-us"
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
@@ -41,11 +42,50 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///tutor")
-}
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
+#DATABASES = {
+#    "default": env.db("DATABASE_URL", default="postgres:///tutor"),
+#    'extra': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
+#    }
+#}
+#DATABASES["default"]["ATOMIC_REQUESTS"] = True
+#print(DATABASES)
 
+# DATABASES = os.environ.get('DATABASE_URL') or 'sqlite:///%s' % (os.path.join(ROOT_DIR, "db.sqlite3"))
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': os.environ.get('POSTGRES_DB'),
+#        'USER': os.environ.get('POSTGRES_USER'),
+#        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+#        'HOST': os.environ.get('POSTGRES_HOST'),
+#        'PORT': os.environ.get('POSTGRES_PORT'),  # Set to empty string for default.
+#    },
+#    'extra': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
+#    }
+#}
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'NAME': 'tutor',
+        'USER': 'postgres',
+        'PASSWORD': 'password-xxxx%',
+        'HOST': 'localhost',
+        'PORT': 5432,  # Set to empty string for default.
+    },
+    'extra': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
+    }
+}
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf

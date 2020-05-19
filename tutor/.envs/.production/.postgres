@@ -1,7 +1,48 @@
 # PostgreSQL
 # ------------------------------------------------------------------------------
-POSTGRES_HOST=postgres
+# POSTGRES_HOST=postgres
+# POSTGRES_PORT=5432
+# POSTGRES_DB=tutor
+# POSTGRES_USER=LIPtWfMlQuTKLDNZVwQGhpMEAmxYuFpB
+# POSTGRES_PASSWORD=xI7fpFjO5g31p4ZirM99tcgYzbHfmCuctRowsaqa5PRdQgRLGzj7yQAtPC6qVtJI
+
+# POSTGRES_HOST=postgres
+POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_DB=tutor
-POSTGRES_USER=LIPtWfMlQuTKLDNZVwQGhpMEAmxYuFpB
-POSTGRES_PASSWORD=xI7fpFjO5g31p4ZirM99tcgYzbHfmCuctRowsaqa5PRdQgRLGzj7yQAtPC6qVtJI
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=@aws-azur3-k8s2o19
+
+# saffron=v89ZKAM3qDjzcDY
+# postgresql ssl connect
+# # Host (e.g host, 127.0.0.1, with port 127.0.0.1:3333)
+# 'postgresql://{user}:{password}@{host}:{port}/{name}'.format(
+# Host = localhost
+# Database = postgres
+# Schema = public
+# CA (Server certificates - path to `root.crt`)
+# KEY (Client key - path to `client.key`)
+# CERT (Client certificates - path to `client.crt`)
+# )
+# run web services over HTTPS instead of HTTP
+# pass `EXAMPLE_API_REVERSE_PROXY_SETUP=1` via environment variables
+# C:\Users\peter\source\repos\flask-restplus-server-example\deploy\README.md
+
+
+# kubernetes db-service env
+# https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS158x+1T2018/courseware/f29faffda86243648df84031205f0ff6/57c4cdbe6ead47baa06e18967578b163/2?activate_block_id=block-v1%3ALinuxFoundationX%2BLFS158x%2B1T2018%2Btype%40html%2Bblock%40573ba678835b48a7a992d41153b9528f
+# REDIS_MASTER_SERVICE_HOST=172.17.0.6
+# REDIS_MASTER_SERVICE_PORT=6379
+# REDIS_MASTER_PORT=tcp://172.17.0.6:6379
+# REDIS_MASTER_PORT_6379_TCP=tcp://172.17.0.6:6379
+# REDIS_MASTER_PORT_6379_TCP_PROTO=tcp
+# REDIS_MASTER_PORT_6379_TCP_PORT=6379
+# REDIS_MASTER_PORT_6379_TCP_ADDR=172.17.0.6
+
+# export AIRBNB_LOGIN='replace_with_your_login'
+# AIRBNB_LOGIN='peter'
+
+# export AIRBNB_PASSWORD='replace_with_your_password'
+# AIRBNB_PASSWORD='*'
+
+

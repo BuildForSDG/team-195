@@ -1,7 +1,38 @@
 # PostgreSQL
 # ------------------------------------------------------------------------------
-POSTGRES_HOST=postgres
+# POSTGRES_HOST=postgres
+# POSTGRES_PORT=5432
+# POSTGRES_DB=tutor
+# POSTGRES_USER=LIPtWfMlQuTKLDNZVwQGhpMEAmxYuFpB
+# POSTGRES_PASSWORD=oVwa1lXA8nfNRrpCU7AzapCXvCJPreStQbC6zBb8QXpAOgUwHsqZMXAKKgst6XWI
+
+
+# POSTGRES_HOST=*
+POSTGRES_HOST=localhost
+# POSTGRES_HOST=127.0.0.1
+# any = * or 127.0.0.1 or localhost
 POSTGRES_PORT=5432
 POSTGRES_DB=tutor
-POSTGRES_USER=LIPtWfMlQuTKLDNZVwQGhpMEAmxYuFpB
-POSTGRES_PASSWORD=oVwa1lXA8nfNRrpCU7AzapCXvCJPreStQbC6zBb8QXpAOgUwHsqZMXAKKgst6XWI
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=@aws-azur3-k8s2o19
+
+
+
+# DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+DATABASE_URL=postgres://postgres:@aws-azur3-k8s2o19@localhost:5432/tutor
+# SQLALCHEMY_DATABASE_URL=postgresql[pyscopg2]:postgres:@aws-azur3-k8s2o19@localhost:5432/books
+# DATABASE_URL=postgresql[pyscopg2]:postgres:@aws-azur3-k8s2o19@localhost:5432/tutor
+
+# DATABASE_URL='postgres://{postgres}:{@aws-azur3-k8s2o19}@localhost:5432/tutor'.format(
+# user=postgres,
+# password=@aws-azur3-k8s2o19,
+# host=127.0.0.1,
+# port=5432,
+# name=books,
+# )
+
+# PGSSLMODE=require
+# PGSSLCERT=./ssl/client-cert.pem
+# PGSSLKEY=./ssl/client-key.pem
+# PGSSLROOTCERT=./ssl/server-ca.pem
+# PGDEBUG=true
