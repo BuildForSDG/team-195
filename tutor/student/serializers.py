@@ -154,3 +154,30 @@ class StudentsSerializer(serializers.ModelSerializer):
 
         newstudent = Students.objects.create(**validated_data)
         return newstudent
+
+    def update(self, instance, validated_data):
+
+        '''
+            Overrides update method of the model serializer
+            to updates a student's record.
+        '''
+
+        instance.firstname = validated_data.get(
+            'firstname'
+        )
+        instance.middlename = validated_data.get(
+            'middlename'
+        )
+        instance.lastname = validated_data.get(
+            'lastname'
+        )
+        instance.Address = validated_data.get('Address')
+        instance.email = validated_data.get('email')
+        instance.age = validated_data.get('age')
+        instance.educationlevel = validated_data.get(
+            'educationlevel'
+        )
+
+        # returns updated student's instance
+
+        return instance
