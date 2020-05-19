@@ -69,6 +69,8 @@ target/
 venv/
 ENV/
 .env
+/.envs
+/tutor/.envs/
 *.postgres
 
 
