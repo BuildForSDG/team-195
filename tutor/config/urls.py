@@ -26,6 +26,7 @@ from student.views import StudentsView
 urlpatterns = [
     path('users/students/register', StudentsView.as_view()),
     path('users/students/<int:p_k>/', StudentsView.as_view()),
+    path('users/students/delete/<int:p_k>/', StudentsView.as_view()),
     path(
         "", TemplateView.as_view(template_name="pages/home.html"), name="home"
     ),

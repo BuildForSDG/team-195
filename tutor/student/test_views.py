@@ -272,3 +272,30 @@ class TestStudentRegistration():
         data = loads(data)
         assert response.status_code == 404
         assert data["detail"] == "Not found."
+
+    def test_student_record_deleted(self, student):
+        '''
+            Tests if the student record has been successfully
+            deleted
+        '''
+        response = self.c.delete(
+            '/users/students/delete/'+str(student)+'/'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 200
+        assert data["delete_message"] == "The student record has been deleted"
+
+    def test_delete_student_record_notfound(self):
+        '''
+            Tests if the student record to be deleted dosen't exist.
+        '''
+        response = self.c.delete(
+            '/users/students/delete/1/'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 404
+        assert data["detail"] == "Not found."

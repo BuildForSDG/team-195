@@ -65,3 +65,20 @@ class StudentsView(APIView):
 
         # Returns an error if one the of the request data value is invlid
         return Response(serializer.errors, status=400)
+
+    def delete(self, request, p_k):
+
+        '''
+            Deletes a student's record else it
+            raises an exception, the student record wasn't
+            found.
+        '''
+
+        student_inastance = self.get_object(p_k)
+
+        student_inastance.delete()
+
+        return Response(
+            {"delete_message": "The student record has been deleted"},
+            status=200
+        )
