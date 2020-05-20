@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from student.views import StudentsView
@@ -27,6 +27,7 @@ urlpatterns = [
     path('users/students/register', StudentsView.as_view()),
     path('users/students/<int:p_k>/', StudentsView.as_view()),
     path('users/students/delete/<int:p_k>/', StudentsView.as_view()),
+    re_path(r'^users/students/all/(?P<p_k>[0-9]*)$', StudentsView.as_view()),
     path(
         "", TemplateView.as_view(template_name="pages/home.html"), name="home"
     ),

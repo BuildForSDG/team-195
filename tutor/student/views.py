@@ -82,3 +82,31 @@ class StudentsView(APIView):
             {"delete_message": "The student record has been deleted"},
             status=200
         )
+
+    def get(self, request, p_k):
+
+        '''
+            Gets all students registered on the platform
+        '''
+
+        # If a student id(p_k) is provided, it gets the student's
+        # instance
+        if p_k:
+
+            # Gets student's object
+            student = self.get_object(p_k)
+
+            # Converts the student's object to a python dictionary
+            serialized_student = StudentsSerializer(student)
+
+            return Response(serialized_student.data, status=200)
+
+        # Returns a queryset of students order by first name
+        all_students = Students.objects.all().order_by('firstname')
+
+        # Returns a list of dictionaries, each dictionary representing
+        # a student's record
+        all_students_serialized = StudentsSerializer(all_students, many=True)
+
+        # Returns a json representation of the list of students
+        return Response(all_students_serialized.data, status=200)

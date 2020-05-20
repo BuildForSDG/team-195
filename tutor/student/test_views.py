@@ -53,6 +53,32 @@ class TestStudentRegistration():
         # returns the student's id
         return data['id']
 
+    @pytest.fixture()
+    def save_student(self):
+        '''
+            A fixture that registers a student,
+            and it's used in tests to test if a student's
+            record exists.
+        '''
+
+        response = self.c.post(
+            '/users/students/register', {
+                "firstname": self.firstname,
+                "middlename": self.middlename,
+                "lastname": self.lastname,
+                "Address": self.Address,
+                "email": self.email,
+                "age": self.age,
+                "educationlevel": self.educationlevel
+                }
+        )
+
+        data = response.content
+        data = loads(data)
+
+        # returns the student's id
+        return data
+
     def test_empty_values(self):
         '''
             Tests if some of values passed are empty
@@ -293,6 +319,53 @@ class TestStudentRegistration():
         '''
         response = self.c.delete(
             '/users/students/delete/1/'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 404
+        assert data["detail"] == "Not found."
+
+    def test_get_all_students_records(self, save_student):
+        '''
+            Tests if all students records are returned.
+        '''
+        response = self.c.get(
+            '/users/students/all/'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 200
+        assert data[0]["firstname"] == save_student['firstname']
+        assert data[0]["middlename"] == save_student['middlename']
+        assert data[0]["lastname"] == save_student['lastname']
+        assert data[0]["Address"] == save_student['Address']
+        assert data[0]["email"] == save_student['email']
+
+    def test_get_student_records(self, student):
+        '''
+            Tests if all students records are returned.
+        '''
+        response = self.c.get(
+            '/users/students/all/'+str(student)
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 200
+        assert data["firstname"] == 'Andrew'
+        assert data["middlename"] == 'Njaya'
+        assert data["lastname"] == 'Odhiambo'
+        assert data["Address"] == 'Mombasa, Kenya'
+        assert data["email"] == 'njayaandrew@gmail.com'
+
+    def test_get_student_records_notfound(self):
+        '''
+            Tests if a student's records fetched wasn't found.
+        '''
+        response = self.c.get(
+            '/users/students/all/2'
         )
         data = response.content
         # Changes the response data to a dictionary
