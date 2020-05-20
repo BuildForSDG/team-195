@@ -42,6 +42,8 @@ Django = "==3.0.5"
 Collectfast = "==2.1.0"
 Werkzeug = "==1.0.1"
 Sphinx = "==3.0.3"
+djangorestframework = "*"
+celery = "*"
 
 [requires]
 python_version = "3.6"
