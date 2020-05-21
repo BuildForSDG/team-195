@@ -73,3 +73,16 @@ class ValidateStudentData:
         if not valid_age:
             return True
         return False
+
+    @staticmethod
+    def check_education_level(education_level):
+        '''
+            This restricts to just learners in elementary
+            school.
+        '''
+
+        pattern = re.compile(r'(1st|2nd|3rd|[4-8]th)-grade')
+        valid_level = pattern.fullmatch(education_level)
+        if not valid_level:
+            return True
+        return False

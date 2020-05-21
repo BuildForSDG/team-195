@@ -22,7 +22,7 @@ class TestStudentRegistration():
     Address = 'Mombasa, Kenya'
     email = 'njayaandrew@gmail.com'
     age = 28
-    educationlevel = 'Degree'
+    educationlevel = '4th-grade'
 
     # Initialises the client object
     c = APIClient()
@@ -100,6 +100,31 @@ class TestStudentRegistration():
         assert response.status_code == 400
         assert data["middlename"] == ["Please provide middle name value"]
 
+    def test_education_level_value(self):
+        '''
+            Tests if a valid level of education was provided
+        '''
+        response = self.c.post(
+            '/users/students/register', {
+                "firstname": self.firstname,
+                "middlename": self.middlename,
+                "lastname": self.lastname,
+                "Address": self.Address,
+                "email": self.email,
+                "age": self.age,
+                "educationlevel": 'Highschool'
+                },
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 400
+        assert data["non_field_errors"] == [
+            "Sorry only students in grade school are allowed"
+            " to register or provide a valid grade school level"
+            " like, 1st-grade, 2nd-grade, 3rd-grade 4, 5..8th-grade"
+            ]
+
     def test_valid_names(self):
         '''
             Tests for valid names
@@ -121,7 +146,7 @@ class TestStudentRegistration():
         assert response.status_code == 400
         assert data["non_field_errors"] == [
             "The first , middle, last names"
-            " and educationlevel should start with"
+            " should start with"
             " anuppercase followed by"
             " lowercase characters. e.g Andrew"
             ]

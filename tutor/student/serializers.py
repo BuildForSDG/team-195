@@ -97,6 +97,11 @@ class StudentsSerializer(serializers.ModelSerializer):
             data['lastname'], data['educationlevel']
         )
 
+        valid_string_names = (
+            data['firstname'], data['middlename'],
+            data['lastname']
+        )
+
         # Checks for space characters
         have_white_space =\
             ValidateStudentData.check_white_spaces(
@@ -112,13 +117,13 @@ class StudentsSerializer(serializers.ModelSerializer):
         # Checks for valid names
         not_valid_name =\
             ValidateStudentData.check_valid_names(
-                *string_values
+                *valid_string_names
             )
 
         if not_valid_name:
             raise serializers.ValidationError(
-                "The first , middle, last names and "
-                "educationlevel should start with an"
+                "The first , middle, last names "
+                "should start with an"
                 "uppercase followed by lowercase characters. e.g Andrew"
             )
 
@@ -132,6 +137,7 @@ class StudentsSerializer(serializers.ModelSerializer):
                 "Please provide a valid address value."
                 "e.g London, Unitedkingdom"
             )
+
         # Check for a valid age
         age_string = str(data['age'])
         not_valid_age =\
@@ -144,6 +150,17 @@ class StudentsSerializer(serializers.ModelSerializer):
                 " is 6 and the maximum 40"
             )
 
+        # Check for a valid education level
+        not_valid_level =\
+            ValidateStudentData.check_education_level(
+                data['educationlevel']
+            )
+        if not_valid_level:
+            raise serializers.ValidationError(
+                "Sorry only students in grade school are allowed"
+                " to register or provide a valid grade school level"
+                " like, 1st-grade, 2nd-grade, 3rd-grade 4, 5..8th-grade"
+            )
         return data
 
     def create(self, validated_data):
