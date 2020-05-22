@@ -4,6 +4,9 @@ from django.db import models
 '''
 
 class Chapter(models.Model):
+    '''
+    A model to store chapters records
+    '''
     chapter_name = models.CharField(max_length=50)
     content = models.FileField()
 
@@ -13,6 +16,9 @@ class Chapter(models.Model):
 
 
 class Course(models.Model):
+    '''
+    A model to store courses records
+    '''
     course_name = models.CharField(max_length=50)
     grade = models.CharField(max_length=20)
     description = models.TextField()

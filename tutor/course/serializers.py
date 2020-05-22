@@ -5,8 +5,8 @@ from .models import Course, Chapter
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ['course_name', 'description',
-                  'created', 'created_by', 'price']
+        fields = ['course_name', 'grade','description',
+                  'created', 'created_by', 'price','chapters']
 
 
 class ChapterSerializer(serializers.ModelSerializer):

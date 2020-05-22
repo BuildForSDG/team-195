@@ -1,5 +1,8 @@
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework import viewsets
-from django.shortcuts import render
+from rest_framework import authentication, permissions
 from course.serializers import CourseSerializer, ChapterSerializer
 from .models import Course, Chapter
 
@@ -10,7 +13,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Course.objects.all()
 	serializer_class = CourseSerializer
-
+		
 
 class ChapterViewSet(viewsets.ModelViewSet):
 	"""
