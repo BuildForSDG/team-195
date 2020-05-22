@@ -397,3 +397,75 @@ class TestStudentRegistration():
         data = loads(data)
         assert response.status_code == 404
         assert data["detail"] == "Not found."
+
+    def test_valid_age_query_parameter(self):
+        '''
+            Tests if age query parameter is a valid integer"
+        '''
+        response = self.c.get(
+            '/users/students/all/?age=six'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 400
+        assert data["error"] == "Please provide valid age i.e numbers"
+
+    def test_valid_grade_level_query_parameter(self):
+        '''
+            Tests if grade school level query parameter value
+            is a valid level"
+        '''
+        response = self.c.get(
+            '/users/students/all/?educationlevel=grade1'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 400
+        assert data["error"] ==\
+            "Please provide valid grade school level"\
+            " e.g 1st-grade, 2nd-grade 3rd..."
+
+    def test_valid_firstname_query_parameter(self):
+        '''
+            Tests if firstname query parameter value
+            is a valid letter"
+        '''
+        response = self.c.get(
+            '/users/students/all/?firstname=234'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 400
+        assert data["error"] == "Please provide valid letters"
+
+    def test_empty_firstname_search_results(self):
+        '''
+            Tests if firstname query search results is
+            empty
+        '''
+        response = self.c.get(
+            '/users/students/all/?firstname=A'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 404
+        assert data["error"] == 'The search results were not found'
+
+    def test_firstname_search_results(self, save_student):
+        '''
+            Tests for firstname query search results.
+        '''
+        response = self.c.get(
+            '/users/students/all/?firstname=A'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 200
+        assert data[0]["firstname"] == save_student['firstname']
+        assert data[0]["middlename"] == save_student['middlename']
+        assert data[0]["lastname"] == save_student['lastname']

@@ -5,10 +5,12 @@
 '''
 
 from django.http import Http404
+from django.db.models.query import QuerySet
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import StudentsSerializer
+from .serializers import StudentsSerializer, ValidateStudentData
 from .models import Students
+
 
 # A view to register, delete, view and update students details.
 
@@ -89,24 +91,113 @@ class StudentsView(APIView):
             Gets all students registered on the platform
         '''
 
-        # If a student id(p_k) is provided, it gets the student's
-        # instance
-        if p_k:
+        # Creates a varaiable that holds student's query set
+        students_query_set = Students.query_students_by_parameter()
 
-            # Gets student's object
-            student = self.get_object(p_k)
+        # Gets query parameters dictionary
+        parameters_dict = request.query_params
 
-            # Converts the student's object to a python dictionary
-            serialized_student = StudentsSerializer(student)
+        # Checks if firstname, age and educationlevel keys
+        # exists in the parameters dictionary
+        if 'firstname' in parameters_dict:
 
-            return Response(serialized_student.data, status=200)
+            firstname = parameters_dict['firstname']
 
-        # Returns a queryset of students order by first name
-        all_students = Students.objects.all().order_by('firstname')
+            not_valid_letters = ValidateStudentData.check_string_value(
+                firstname
+            )
+            if not_valid_letters:
 
-        # Returns a list of dictionaries, each dictionary representing
-        # a student's record
-        all_students_serialized = StudentsSerializer(all_students, many=True)
+                return Response(
+                    {"error": 'Please provide valid letters'},
+                    status=400
+                )
 
-        # Returns a json representation of the list of students
-        return Response(all_students_serialized.data, status=200)
+            students_query_set = Students.query_students_by_parameter(
+                firstname=firstname
+            )
+
+        elif 'age' in parameters_dict:
+
+            age = parameters_dict['age']
+
+            not_valid_interger = ValidateStudentData.check_interger_value(
+                age
+            )
+
+            if not_valid_interger:
+
+                return Response(
+                    {"error": 'Please provide valid age i.e numbers'},
+                    status=400
+                )
+
+            students_query_set = Students.query_students_by_parameter(
+                age=age
+            )
+        elif 'educationlevel' in parameters_dict:
+
+            gradelevel = parameters_dict['educationlevel']
+
+            not_valid_level = ValidateStudentData.check_education_level(
+                gradelevel
+            )
+
+            if not_valid_level:
+
+                return Response(
+                    {
+                        "error": 'Please provide valid grade school level e.g'
+                                 ' 1st-grade, 2nd-grade 3rd...'
+                    },
+                    status=400
+                )
+            students_query_set = Students.query_students_by_parameter(
+                educationlevel=gradelevel
+            )
+        else:
+            pass
+
+        # If the student's query set variable is not an instance
+        # of the query set, run the default request
+        if not isinstance(students_query_set, QuerySet):
+            # If a student id(p_k) is provided, it gets the student's
+            # instance
+            if p_k:
+
+                # Gets student's object
+                student = self.get_object(p_k)
+
+                # Converts the student's object to a python dictionary
+                serialized_student = StudentsSerializer(student)
+
+                return Response(serialized_student.data, status=200)
+
+            # Returns a queryset of students order by first name
+            all_students = Students.objects.all().order_by('firstname')
+
+            # Returns a list of dictionaries, each dictionary representing
+            # a student's record
+            all_students_serialized = StudentsSerializer(
+                all_students, many=True
+                )
+
+            # Returns a json representation of the list of students
+            print(students_query_set)
+            return Response(all_students_serialized.data, status=200)
+
+        else:
+            # if the student's query set is an instance of the queryset,
+            # this serailizes the query set.
+            serialized_queried_students = StudentsSerializer(
+                students_query_set, many=True
+            )
+            # When the serialized query set if empty, it returns 404
+            # response.
+            if not serialized_queried_students.data:
+                return Response(
+                    {"error": 'The search results were not found'},
+                    status=404
+                )
+            # Returns the serach results.
+            return Response(serialized_queried_students.data, status=200)
