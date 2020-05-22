@@ -4,6 +4,9 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+import os # new
+# reading .env file
+environ.Env.read_env()
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # tutor/
@@ -23,7 +26,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
 # In Windows, this must be set to your system time zone.
-TIME_ZONE = "1"
+TIME_ZONE = "UTC"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "en-us"
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
@@ -41,13 +44,23 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
+# DATABASES = {
+#     "default": env.db(
+#         "DATABASE_URL",
+#         default="psql://postgres:team-195@127.0.0.1:5432/gradeschool"
+#     )
+# }
+# DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
 DATABASES = {
-    "default": env.db(
-        "DATABASE_URL",
-        default="psql://postgres:team-195@127.0.0.1:5432/gradeschool"
-    )
+    "default": env.db("DATABASE_URL", default="postgres:///gradeschool"),
+    'extra': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
+    }
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
+print(DATABASES)
 
 # URLS
 # ------------------------------------------------------------------------------
