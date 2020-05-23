@@ -3,11 +3,15 @@ Base settings to build other settings files upon.
 """
 from pathlib import Path
 import os
-
 import environ
 
+
+# new
+# reading .env file
+environ.Env.read_env()
+
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-print(ROOT_DIR)
+
 # tutor/
 APPS_DIR = ROOT_DIR / "tutor"
 env = environ.Env()
