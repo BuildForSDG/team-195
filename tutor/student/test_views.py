@@ -322,7 +322,7 @@ class TestStudentRegistration():
         # Changes the response data to a dictionary
         data = loads(data)
         assert response.status_code == 404
-        assert data["detail"] == "Not found."
+        assert data["detail"] == "Sorry the student with the id dosen't exist"
 
     def test_student_record_deleted(self, student):
         '''
@@ -349,7 +349,7 @@ class TestStudentRegistration():
         # Changes the response data to a dictionary
         data = loads(data)
         assert response.status_code == 404
-        assert data["detail"] == "Not found."
+        assert data["detail"] == "Sorry the student with the id dosen't exist"
 
     def test_get_all_students_records(self, save_student):
         '''
@@ -396,7 +396,7 @@ class TestStudentRegistration():
         # Changes the response data to a dictionary
         data = loads(data)
         assert response.status_code == 404
-        assert data["detail"] == "Not found."
+        assert data["detail"] == "Sorry the student with the id dosen't exist"
 
     def test_valid_age_query_parameter(self):
         '''

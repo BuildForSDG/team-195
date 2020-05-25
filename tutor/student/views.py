@@ -4,12 +4,13 @@
     a particular student record and getting all students records.
 '''
 
-from django.http import Http404
+# from django.http import Http404
 from django.db.models.query import QuerySet
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import StudentsSerializer, ValidateStudentData
 from .models import Students
+from .utils import StudentNotFound
 
 
 # A view to register, delete, view and update students details.
@@ -31,9 +32,7 @@ class StudentsView(APIView):
         try:
             return Students.objects.get(pk=p_k)
         except Students.DoesNotExist:
-            raise Http404(
-                'Sorry the student with the id dosen\'t  dosen\'t exist'
-            )
+            raise StudentNotFound
 
     def post(self, request):
 
