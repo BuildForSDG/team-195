@@ -1,7 +1,7 @@
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework import authentication, permissions
 from course.serializers import CourseSerializer, ChapterSerializer
 from .models import Course, Chapter

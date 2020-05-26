@@ -8,8 +8,8 @@ from rest_framework import routers
 from course import views
 
 router = routers.DefaultRouter()
-router.register(r'courses', views.CourseViewSet)
-router.register(r'chapters', views.ChapterViewSet)
+router.register(r'courses', views.CourseViewSet, basename='course')
+router.register(r'chapters', views.ChapterViewSet, basename='chapter')
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
