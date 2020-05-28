@@ -5,7 +5,6 @@
 
 
 from rest_framework import serializers
-from tutor.users.models import User
 from .models import Course, Chapter
 
 
@@ -44,4 +43,12 @@ class ChapterSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Chapter
 		fields = ('id','chapter_name', 'content', 'course','owner')
+		extra_kwargs = {
+			"chapter_name": {
+				"error_messages": {
+					"blank": "Please provide the Chapter name"
+                }
+            }
+        }
+
 
