@@ -28,7 +28,6 @@ class Chapter(models.Model):
     chapter_name = models.CharField(max_length=50)
     content = models.FileField()
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    owner = models.CharField(max_length=30)
-
+    
     def __str__(self):
         return "%s %s" % (self.course, self.chapter_name)

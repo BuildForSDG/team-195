@@ -39,10 +39,9 @@ class ChapterSerializer(serializers.ModelSerializer):
 	'''
 		A class to serialize data from Chapter model
 	'''
-	owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 	class Meta:
 		model = Chapter
-		fields = ('id','chapter_name', 'content', 'course','owner')
+		fields = ('id','chapter_name', 'content', 'course')
 		extra_kwargs = {
 			"chapter_name": {
 				"error_messages": {
