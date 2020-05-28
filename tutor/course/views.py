@@ -26,13 +26,3 @@ class ChapterViewSet(viewsets.ModelViewSet):
 	serializer_class = ChapterSerializer
 	http_method_names = ['get', 'post', 'patch','retrieve','delete','head']
 
-class CourseChapterList(generics.ListAPIView):
-	serializer_class = ChapterSerializer
-
-	def get_queryset(self):
-		"""
-		This view should return a list of all the purchases for
-		the user as determined by the username portion of the URL.
-		"""
-		course = self.kwargs['course_id']
-		return Chapter.objects.filter(course_id=course)
