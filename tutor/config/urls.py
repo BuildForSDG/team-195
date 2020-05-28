@@ -24,6 +24,8 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('course-chapters/', views.ChapterViewSet.as_view({'get':'list'}), name='course-chapters'),
+    path('course-chapters/<int:course>/', views.ChapterViewSet.as_view({'get':'list'}), name='course-chapters'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

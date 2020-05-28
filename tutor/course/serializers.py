@@ -1,15 +1,47 @@
+'''
+    A serializer to serialize data from Course and Chapter models
+    and parse json to the view.
+'''
+
+
 from rest_framework import serializers
+from tutor.users.models import User
 from .models import Course, Chapter
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Course
-        fields = ['course_name', 'grade','description',
-                  'created', 'created_by', 'price','chapters']
+	'''
+		A class to serialize data from Course model
+	'''
+	class Meta:
+		model = Course
+		fields = ['id','course_name', 'grade','description',
+					'created', 'created_by']
+		extra_kwargs = {
+			"course_name": {
+				"error_messages": {
+					"blank": "Please provide the course name"
+                }
+            },
+            "grade": {
+				"error_messages": {
+					"blank": "Please provide grade for the course"
+                }
+            },"description": {
+				"error_messages": {
+					"blank": "Please provide course description"
+                }
+            },
+
+            }
 
 
 class ChapterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Chapter
-        fields = ('chapter_name', 'content')
+	'''
+		A class to serialize data from Chapter model
+	'''
+	owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+	class Meta:
+		model = Chapter
+		fields = ('id','chapter_name', 'content', 'course','owner')
+
