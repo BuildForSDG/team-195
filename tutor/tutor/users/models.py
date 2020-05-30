@@ -20,6 +20,15 @@ class User(AbstractUser):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    # enrolled_courses = models.ManyToManyField(Subject, related_name='interested_students')
+
+
+    def __str__(self):
+        return self.user.username
+
+
+class Instructor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
         return self.user.username

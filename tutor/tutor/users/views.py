@@ -5,6 +5,9 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 
+# from .models import User # replaced contrib.auth
+from .serializers import UserSerializer
+
 User = get_user_model()
 
 
@@ -53,16 +56,3 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 user_redirect_view = UserRedirectView.as_view()
 
-class StudentSignUpView(CreateView):
-    model = User
-    form_class = StudentSignUpForm
-    template_name = 'registration/signup_form.html'
-
-    def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'student'
-        return super().get_context_data(**kwargs)
-
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return redirect('students:quiz_list')

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "02401484d9c70c8bb00cd3a9fb98b85582f8d3566d29589a408cb17235ea45dd"
+            "sha256": "f99fb5a0143c027b67683f76cd5aa599f072922945d90c5379f2e3b6982ebfa6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -285,10 +285,10 @@
         },
         "django-allauth": {
             "hashes": [
-                "sha256:7ab91485b80d231da191d5c7999ba93170ef1bf14ab6487d886598a1ad03e1d8"
+                "sha256:f17209410b7f87da0a84639fd79d3771b596a6d3fc1a8e48ce50dabc7f441d30"
             ],
             "index": "pypi",
-            "version": "==0.41.0"
+            "version": "==0.42.0"
         },
         "django-anymail": {
             "extras": [
@@ -362,6 +362,13 @@
             ],
             "index": "pypi",
             "version": "==4.11.0"
+        },
+        "django-rest-auth": {
+            "hashes": [
+                "sha256:f11e12175dafeed772f50d740d22caeab27e99a3caca24ec65e66a8d6de16571"
+            ],
+            "index": "pypi",
+            "version": "==0.9.5"
         },
         "django-role-permissions": {
             "hashes": [
