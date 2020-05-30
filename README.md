@@ -73,3 +73,11 @@ The environment files for each service in the .envs directory and add the requir
 The docker yaml template we will be editing is. To use docker make sure that docker service is installed on your PC, linux or MaC.
 You can get the [docker Compose Docker Machine](https://docs.docker.com/)
 
+
+## Support for multiple roles using Django's User Model
+
+We need to add a package called pipenv install django-role-permissions. We can install it using:
+
+```bash
+pipenv install django-role-permissions===2.2.0
+```
