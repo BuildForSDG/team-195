@@ -2,3 +2,14 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
+
+# new
+# DATABASE_URL=postgres://postgres:password@localhost:5432/tutor
+# DATABASE_URL=psql://postgres:password@127.0.0.1:5432/tutor
+# export DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+# set DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+DJANGO_DEBUG=False
+# DJANGO_ALLOWED_HOSTS=[]
+# DJANGO_ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# DJANGO_ALLOWED_HOSTS = ['XXX.iptime.org', 'localhost', '127.0.0.1', 'testserver']
+DJANGO_ALLOWED_HOSTS=['.herokuapp.com', 'localhost', '127.0.0.1', '[::1]', '0.0.0.0']

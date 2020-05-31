@@ -68,12 +68,20 @@ target/
 .venv
 venv/
 ENV/
+.env
+/.envs
+/tutor/.envs/
+*.postgres
+
 
 # Rope project settings
 .ropeproject
 
 # mkdocs documentation
 /site
+
+other dir
+/notes
 
 # mypy
 .mypy_cache/
@@ -156,8 +164,6 @@ typings/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-
 
 
 
@@ -272,6 +278,9 @@ tutor/media/
 .pytest_cache/
 
 
-.env
-.envs/*
-!.envs/.local/
+.env
+
+.envs/*
+
+!.envs/.local/
+

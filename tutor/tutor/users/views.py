@@ -5,6 +5,9 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 
+# from .models import User # replaced contrib.auth
+from .serializers import UserSerializer
+
 User = get_user_model()
 
 
@@ -13,6 +16,10 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    # new
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
 
 
 user_detail_view = UserDetailView.as_view()
@@ -48,3 +55,4 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+

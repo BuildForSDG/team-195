@@ -5,6 +5,13 @@ from pathlib import Path
 
 import environ
 
+import os # new
+# reading .env file
+environ.Env.read_env()
+# False if not in os.environ
+# DEBUG = env('DEBUG')
+# import dj_database_url # new
+
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # tutor/
 APPS_DIR = ROOT_DIR / "tutor"
@@ -15,6 +22,15 @@ if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR / ".env"))
 
+# #===========if using dj_database_url instead of  current django-environ====
+# import dj_database_url
+#
+# if os.environ.get('DATABASE_URL'):
+#     DATABASES['default'] =
+#         dj_database_url.config(default=os
+#
+#=========================
+
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
@@ -23,7 +39,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
 # In Windows, this must be set to your system time zone.
-TIME_ZONE = "1"
+TIME_ZONE = "UTC"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "en-us"
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
@@ -42,9 +58,54 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///tutor")
+    "default": env.db("DATABASE_URL", default="postgres:///tutor"),
+    'extra': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
+    }
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
+print(DATABASES)
+
+# DATABASES = {
+#     'default': env.db('DATABASE_URL', default='sqlite://./db.sqlite3'),
+# }
+# DATABASES["default"]["ATOMIC_REQUESTS"] = True
+# print(DATABASES)
+
+#django-environ
+## Parse database connection url strings like psql://user:pass@127.0.0.1:8458/db
+#DATABASES = {
+#    # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
+#    'default': env.db(),
+#    # read os.environ['SQLITE_URL']
+#    'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
+#}
+#
+
+# if os.environ.get('DATABASE_URL'):
+#     DATABASES['default'] = dj_database_url.config(default=os)
+#
+# DATABASES = os.environ.get('DATABASE_URL') or 'sqlite:///%s' % (os.path.join(ROOT_DIR, "db.sqlite3"))
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': os.environ.get('POSTGRES_DB'),
+#        'USER': os.environ.get('POSTGRES_USER'),
+#        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+#        'HOST': os.environ.get('POSTGRES_HOST'),
+#        'PORT': os.environ.get('POSTGRES_PORT'),  # Set to empty string for default.
+#    },
+#    'extra': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
+#    }
+#}
+
+# DEBUG = bool(os.environ.get('DJANGO_DEBUG', True) == 'False')
+# ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
+
 
 # URLS
 # ------------------------------------------------------------------------------

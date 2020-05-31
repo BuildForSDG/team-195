@@ -1,3 +1,6 @@
+# to replace logic with serializer
+
+"""
 from django.contrib.auth import forms, get_user_model
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -28,3 +31,4 @@ class UserCreationForm(forms.UserCreationForm):
             return username
 
         raise ValidationError(self.error_messages["duplicate_username"])
+"""
