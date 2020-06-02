@@ -7,6 +7,8 @@
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from course.serializers import CourseSerializer
+from course.models import Course
 from .models import Students
 from .validators import ValidateStudentData
 
@@ -17,6 +19,10 @@ class StudentsSerializer(serializers.ModelSerializer):
     '''
         A Model class to serialize student model
     '''
+    course_set = CourseSerializer(read_only=True, many=True)
+    # course_set = serializers.PrimaryKeyRelatedField(
+    #     many=True, queryset=Course.objects.all()
+    # )
     email = serializers.EmailField(
         error_messages={
             "invalid": "Please provide a valid email address"
@@ -37,10 +43,10 @@ class StudentsSerializer(serializers.ModelSerializer):
         '''
         model = Students
         fields = [
-            'id', 'firstname',
+            'user', 'firstname',
             'middlename', 'lastname',
             'Address', 'email',
-            'age', 'educationlevel'
+            'age', 'educationlevel', 'course_set'
         ]
         extra_kwargs = {
             "firstname": {
@@ -168,8 +174,8 @@ class StudentsSerializer(serializers.ModelSerializer):
         '''
             Adds  a new student to the database
         '''
-
         newstudent = Students.objects.create(**validated_data)
+
         return newstudent
 
     def update(self, instance, validated_data):
@@ -178,7 +184,6 @@ class StudentsSerializer(serializers.ModelSerializer):
             Overrides update method of the model serializer
             to updates a student's record.
         '''
-
         instance.firstname = validated_data.get(
             'firstname'
         )
@@ -194,7 +199,6 @@ class StudentsSerializer(serializers.ModelSerializer):
         instance.educationlevel = validated_data.get(
             'educationlevel'
         )
-
         # returns updated student's instance
 
         return instance

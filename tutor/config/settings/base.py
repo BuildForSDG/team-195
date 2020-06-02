@@ -74,8 +74,7 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
-    "course",
-    "rest_framework",
+    "course"
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -86,10 +85,10 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "tutor.users.apps.UsersConfig",
-    "student.apps.StudentConfig"
+    "student.apps.StudentConfig",
     # Your stuff: custom apps go here
+    "allusers.apps.AllusersConfig"
 ]
-
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

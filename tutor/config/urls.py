@@ -21,7 +21,9 @@ from django.urls import include, path, re_path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from rest_framework import routers
-from student.views import StudentsView
+from student.views import StudentsView, StudentTakeCourseView
+from tutor.users.views import AllUsersView
+from tutor.users.views import TutorsView
 from course import views
 
 router = routers.DefaultRouter()
@@ -29,10 +31,16 @@ router.register(r'courses', views.CourseViewSet, basename='course')
 router.register(r'chapters', views.ChapterViewSet, basename='chapter')
 
 urlpatterns = [
+    path('users/add/', AllUsersView.as_view()),
+    path('users/tutors/register/', TutorsView.as_view()),
     path('users/students/register', StudentsView.as_view()),
     path('users/students/<int:p_k>/', StudentsView.as_view()),
     path('users/students/delete/<int:p_k>/', StudentsView.as_view()),
     re_path(r'^users/students/all/(?P<p_k>[0-9]*)$', StudentsView.as_view()),
+    path(
+        'users/students/<int:student_id>/courses/<int:course_id>/take_course',
+        StudentTakeCourseView.as_view()
+    ),
     path(
         "", TemplateView.as_view(template_name="pages/home.html"), name="home"
     ),
@@ -55,7 +63,7 @@ urlpatterns = [
         name='course-chapters'
     ),
     path(
-        'course-chapters/<int:course>/', 
+        'course-chapters/<int:course>/',
         views.ChapterViewSet.as_view({'get': 'list'}),
         name='course-chapters'
     ),

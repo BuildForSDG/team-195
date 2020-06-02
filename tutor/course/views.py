@@ -16,7 +16,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'patch','retrieve','delete','head']
 
     def perform_create(self, serializer):
-    	serializer.save(created_by=self.request.user)
+    	serializer.save()
 
 
 class ChapterViewSet(viewsets.ModelViewSet):

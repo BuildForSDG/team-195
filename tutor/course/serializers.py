@@ -13,13 +13,13 @@ class CourseSerializer(serializers.ModelSerializer):
         A class to serialize data from Course model
     '''
     class Meta:
-    	"""
+        """
             Meta class specifying courses fields.
         """
-
         fields = [
-            'id', 'course_name', 'grade', 'description', 
-            'created', 'created_by'
+            'id', 'course_name',
+            'grade', 'description',
+            'created', 'tutor'
         ]
         model = Course
         extra_kwargs = {
@@ -46,7 +46,7 @@ class ChapterSerializer(serializers.ModelSerializer):
         A class to serialize data from Chapter model
     '''
     class Meta:
-    	"""
+        """
             Meta class specifying chapter fields.
         """
         model = Chapter

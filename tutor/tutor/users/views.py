@@ -1,9 +1,17 @@
+""""
+    View classes to add tutors and users
+"""
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializers import TutorsSerializer, UsersSerializer
+
 
 User = get_user_model()
 
@@ -48,3 +56,43 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+
+
+class AllUsersView(APIView):
+    """
+        A view to add a user
+    """
+
+    def post(self, request):
+        """
+            This function creates a user
+        """
+
+        serializer = UsersSerializer(data=request.data)
+        # Checks if the request data is valid
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=201)
+
+        # Returns an error if one the request data is invalid
+        return Response(serializer.errors, status=400)
+
+
+class TutorsView(APIView):
+    """
+        A view to add a tutor
+    """
+
+    def post(self, request):
+        """
+            This function creates a tutor
+        """
+
+        serializer = TutorsSerializer(data=request.data)
+        # Checks if the request data is valid
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=201)
+
+        # Returns an error if one the request data is invalid
+        return Response(serializer.errors, status=400)

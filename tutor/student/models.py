@@ -4,6 +4,7 @@
 '''
 
 from django.db import models
+from django.conf import settings
 
 
 class Students(models.Model):
@@ -11,7 +12,10 @@ class Students(models.Model):
     '''
         Students' model
     '''
-
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+        primary_key=True,
+    )
     firstname = models.CharField(max_length=20)
     middlename = models.CharField(max_length=20)
     lastname = models.CharField(max_length=20)

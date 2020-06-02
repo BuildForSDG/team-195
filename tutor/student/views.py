@@ -8,9 +8,10 @@
 from django.db.models.query import QuerySet
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from course.serializers import Course
 from .serializers import StudentsSerializer, ValidateStudentData
 from .models import Students
-from .utils import StudentNotFound
+from .utils import StudentNotFound, CourseNotFound
 
 
 # A view to register, delete, view and update students details.
@@ -182,7 +183,6 @@ class StudentsView(APIView):
                 )
 
             # Returns a json representation of the list of students
-            print(students_query_set)
             return Response(all_students_serialized.data, status=200)
 
         else:
@@ -200,3 +200,53 @@ class StudentsView(APIView):
                 )
             # Returns the serach results.
             return Response(serialized_queried_students.data, status=200)
+
+
+# A view where a student can take a course
+
+
+class StudentTakeCourseView(APIView):
+    """
+        A view where a student can subscribe and
+        unsubscribe to a course, view all courses he/she
+        has subcribed to.
+    """
+
+    def get_object(self, p_k):
+
+        """
+            Gets course's object, incase it doesn't exists
+            it throws an exception the course record wasn't found.
+        """
+
+        try:
+            return Course.objects.get(pk=p_k)
+        except Course.DoesNotExist:
+            raise CourseNotFound
+
+    def post(self, request, student_id, course_id):
+        """
+            A view function to make a student,
+            take a course.
+        """
+        # Instantiates a student's view class
+        student_view = StudentsView()
+
+        # Gets the student's instance
+        student_instance = student_view.get_object(student_id)
+
+        # Get's a course instance
+        course_instance = self.get_object(course_id)
+
+        # Adds a course instance to the student's instance
+        student_instance.course_set.add(course_instance)
+
+        # Serializes the student's instance
+        serialized_student = StudentsSerializer(
+            student_instance
+        )
+
+        # Returns a response that add's the course
+        # to the list of courses the student is already
+        # subscribed to.
+        return Response(serialized_student.data, status=200)
