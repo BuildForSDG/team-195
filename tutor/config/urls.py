@@ -10,6 +10,7 @@ from course import views
 router = routers.DefaultRouter()
 router.register(r'courses', views.CourseViewSet, basename='course')
 router.register(r'chapters', views.ChapterViewSet, basename='chapter')
+router.register(r'grades', views.GradeViewSet, basename='grade')
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
