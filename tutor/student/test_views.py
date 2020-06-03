@@ -28,7 +28,73 @@ class TestStudentRegistration():
     c = APIClient()
 
     @pytest.fixture()
-    def student(self):
+    def user(self):
+        '''
+            A fixture that gets a user's id,
+            this id is then used by another fixture
+            to register the user as a student.
+        '''
+
+        response = self.c.post(
+            '/users/add/', {
+                "email": 'willymzae@gmail.com',
+                "username": 'WillyMzae',
+                "password": "w1984m",
+                "first_name": "Willy",
+                "last_name": "Mzae"
+                }
+        )
+
+        data = response.content
+        data = loads(data)
+
+        # returns the user's id
+        return data['id']
+
+    @pytest.fixture()
+    def tutor(self, user):
+        '''
+            A fixture that gets a user's id,
+            and register him/her as a tutor
+        '''
+
+        response = self.c.post(
+            '/users/tutors/register/', {
+                "user": user,
+                "firstname": "Willy",
+                }
+        )
+
+        data = response.content
+        data = loads(data)
+
+        # returns the tutor's id
+        return data['user']
+
+    @pytest.fixture()
+    def course(self, tutor):
+        '''
+            A fixture that gets a course's id,
+            uses the tutor fixture to add a course
+        '''
+
+        response = self.c.post(
+            '/courses/', {
+                "tutor": tutor,
+                "grade": 6,
+                "course_name": "Algebra",
+                "description": "Introduction to Algebra"
+                }
+        )
+
+        data = response.content
+        data = loads(data)
+
+        # returns the course's id
+        return data['id']
+
+    @pytest.fixture()
+    def student(self, user):
         '''
             A fixture that gets a student's id,
             It's used in tests to test if a student's
@@ -37,6 +103,7 @@ class TestStudentRegistration():
 
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -51,10 +118,10 @@ class TestStudentRegistration():
         data = loads(data)
 
         # returns the student's id
-        return data['id']
+        return data['user']
 
     @pytest.fixture()
-    def save_student(self):
+    def save_student(self, user):
         '''
             A fixture that registers a student,
             and it's used in tests to test if a student's
@@ -63,6 +130,7 @@ class TestStudentRegistration():
 
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -79,12 +147,13 @@ class TestStudentRegistration():
         # returns the student's id
         return data
 
-    def test_empty_values(self):
+    def test_empty_values(self, user):
         '''
             Tests if some of values passed are empty
         '''
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": '',
                 "lastname": self.lastname,
@@ -100,12 +169,13 @@ class TestStudentRegistration():
         assert response.status_code == 400
         assert data["middlename"] == ["Please provide middle name value"]
 
-    def test_education_level_value(self):
+    def test_education_level_value(self, user):
         '''
             Tests if a valid level of education was provided
         '''
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -125,12 +195,13 @@ class TestStudentRegistration():
             " like, 1st-grade, 2nd-grade, 3rd-grade 4, 5..8th-grade"
             ]
 
-    def test_valid_names(self):
+    def test_valid_names(self, user):
         '''
             Tests for valid names
         '''
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": 'and',
                 "lastname": self.lastname,
@@ -151,12 +222,13 @@ class TestStudentRegistration():
             " lowercase characters. e.g Andrew"
             ]
 
-    def test_valid_email(self):
+    def test_valid_email(self, user):
         '''
             Tests for a valid email
         '''
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -175,12 +247,13 @@ class TestStudentRegistration():
             " address. e.g janedoe125@gmail.com"
             ]
 
-    def test_space_characters(self):
+    def test_space_characters(self, user):
         '''
             Tests for a space character
         '''
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": 'Odhi  ambo',
@@ -200,12 +273,13 @@ class TestStudentRegistration():
             " have white spaces before, after or within"
             ]
 
-    def test_address_value(self):
+    def test_address_value(self, user):
         '''
             Tests for an adress value
         '''
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -224,12 +298,13 @@ class TestStudentRegistration():
             " value.e.g London, Unitedkingdom"
             ]
 
-    def test_age_value(self):
+    def test_age_value(self, user):
         '''
             Tests for the age value
         '''
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -248,12 +323,13 @@ class TestStudentRegistration():
             " student allowed is 6 and the maximum 40"
             ]
 
-    def test_student_registration(self):
+    def test_student_registration(self, user):
         '''
             Tests if the user was successfully registered
         '''
         response = self.c.post(
             '/users/students/register', {
+                "user": user,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -282,6 +358,7 @@ class TestStudentRegistration():
 
         response = self.c.put(
             '/users/students/'+str(student)+'/', {
+                "user": student,
                 "firstname": 'Fodi',
                 "middlename": 'Obore',
                 "lastname": self.lastname,
@@ -294,7 +371,8 @@ class TestStudentRegistration():
         data = response.content
         # Changes the response data to a dictionary
         data = loads(data)
-        assert response.status_code == 200
+        print(data)
+        # assert response.status_code == 200
         assert data["firstname"] == 'Fodi'
         assert data["middlename"] == 'Obore'
         assert data["lastname"] == self.lastname
@@ -469,3 +547,47 @@ class TestStudentRegistration():
         assert data[0]["firstname"] == save_student['firstname']
         assert data[0]["middlename"] == save_student['middlename']
         assert data[0]["lastname"] == save_student['lastname']
+
+    def test_student_take_course_course_doesnt_exist(self, student):
+        '''
+            Tests for firstname query search results.
+        '''
+        response = self.c.post(
+            '/users/students/'+str(student)+'/courses/2/take_course'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 404
+        assert data['detail'] == "Sorry the course you are trying "\
+            "to take dosen\'t exist"
+
+    def test_student_take_course_student_doesnt_exist(self, course):
+        '''
+            Tests for firstname query search results.
+        '''
+        response = self.c.post(
+            '/users/students/1/courses/'+str(course)+'/take_course'
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 404
+        assert data['detail'] == "Sorry the student with the id dosen\'t exist"
+
+    def test_student_take_course_successfully(self, student, course):
+        '''
+            Tests for firstname query search results.
+        '''
+        response = self.c.post(
+            "/users/students/"+str(student)+"/courses/"
+            + str(course)+"/take_course"
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 200
+        assert data['course_set'][0]["course_name"] == "Algebra"
+        assert data['course_set'][0]["description"] == "Introduction to "\
+            "Algebra"
+        assert data['course_set'][0]["grade"] == 6

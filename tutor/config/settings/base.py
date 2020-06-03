@@ -87,7 +87,6 @@ LOCAL_APPS = [
     "tutor.users.apps.UsersConfig",
     "student.apps.StudentConfig",
     # Your stuff: custom apps go here
-    "allusers.apps.AllusersConfig"
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
