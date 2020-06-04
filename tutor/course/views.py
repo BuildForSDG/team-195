@@ -2,7 +2,7 @@
 Model Viewsets to provide endpoints for Course, Chapter and Grade APIs
 '''
 
-from rest_framework import viewsets, permissions, authentication
+from rest_framework import viewsets, permissions, authentication, parsers
 from course.serializers import CourseSerializer, ChapterSerializer, GradeSerializer
 from .models import Course, Chapter, Grade
 
@@ -11,8 +11,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     '''
     API endpoint that allows courses to be viewed or edited.
     '''
-    authentication_classes = [authentication.SessionAuthentication,
-                              authentication.BasicAuthentication]
+    authentication_classes = [authentication.BasicAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -26,9 +25,9 @@ class ChapterViewSet(viewsets.ModelViewSet):
     '''
     API endpoint that allows chapters to be viewed or edited.
     '''
-    authentication_classes = [authentication.SessionAuthentication,
-                              authentication.BasicAuthentication]
+    authentication_classes = [authentication.BasicAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    parser_classes = (parsers.MultiPartParser, parsers.FormParser, parsers.JSONParser)
     queryset = Chapter.objects.all()
     serializer_class = ChapterSerializer
     http_method_names = ['get', 'post', 'patch', 'retrieve', 'delete', 'head']
@@ -38,8 +37,7 @@ class GradeViewSet(viewsets.ModelViewSet):
     '''
     API endpoint that allows school grades to be viewed or edited.
     '''
-    authentication_classes = [authentication.SessionAuthentication,
-                              authentication.BasicAuthentication]
+    authentication_classes = [authentication.BasicAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Grade.objects.all()
     serializer_class = GradeSerializer
