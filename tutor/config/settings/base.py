@@ -65,6 +65,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
     'rest_framework',
+    'rest_framework.authtoken'
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

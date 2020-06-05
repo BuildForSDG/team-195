@@ -23,6 +23,7 @@ class StudentsView(APIView):
     '''
         Student view class
     '''
+    permission_classes = (IsAuthenticated,)
 
     permission_classes = (IsAuthenticated,)
     permission_error = "You are not allowed to perform this action"
