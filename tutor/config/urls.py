@@ -15,6 +15,7 @@ Including another URLconf
 """
 
 from django.conf import settings
+from rest_framework.authtoken.views import obtain_auth_token
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
@@ -31,6 +32,7 @@ router.register(r'courses', views.CourseViewSet, basename='course')
 router.register(r'chapters', views.ChapterViewSet, basename='chapter')
 
 urlpatterns = [
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('users/add/', AllUsersView.as_view()),
     path('users/tutors/register/', TutorsView.as_view()),
     path('users/students/register', StudentsView.as_view()),

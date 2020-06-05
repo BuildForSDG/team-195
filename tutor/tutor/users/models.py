@@ -20,6 +20,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=128)
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
+    is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []

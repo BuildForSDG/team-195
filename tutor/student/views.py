@@ -5,6 +5,7 @@
 '''
 
 # from django.http import Http404
+from rest_framework.permissions import IsAuthenticated
 from django.db.models.query import QuerySet
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,6 +24,9 @@ class StudentsView(APIView):
         Student view class
     '''
 
+    permission_classes = (IsAuthenticated,)
+    permission_error = "You are not allowed to perform this action"
+
     def get_object(self, p_k):
 
         '''
@@ -39,6 +43,11 @@ class StudentsView(APIView):
 
         """A method to register a student"""
 
+        if request.user.is_staff:
+            return Response(
+                {'error': self.permission_error},
+                status=403
+            )
         serializer = StudentsSerializer(data=request.data)
 
         # Checks if the request data is valid
@@ -55,6 +64,12 @@ class StudentsView(APIView):
             A method that updates the student's object,
             and returns the updated values.
         '''
+
+        if request.user.is_staff:
+            return Response(
+                {'error': self.permission_error},
+                status=403
+            )
 
         student = self.get_object(p_k)
 
@@ -76,12 +91,18 @@ class StudentsView(APIView):
             found.
         '''
 
+        if request.user.is_staff:
+            return Response(
+                {'error': self.permission_error},
+                status=403
+            )
+
         student_inastance = self.get_object(p_k)
 
         student_inastance.delete()
 
         return Response(
-            {"delete_message": "The student record has been deleted"},
+            {"delete_message": self.permission_error},
             status=200
         )
 
@@ -90,6 +111,12 @@ class StudentsView(APIView):
         '''
             Gets all students registered on the platform
         '''
+
+        if request.user.is_staff:
+            return Response(
+                {'error': self.permission_error},
+                status=403
+            )
 
         # Creates a varaiable that holds student's query set
         students_query_set = Students.query_students_by_parameter()
@@ -212,6 +239,9 @@ class StudentTakeCourseView(APIView):
         has subcribed to.
     """
 
+    permission_classes = (IsAuthenticated,)
+    permission_error = "You are not allowed to perform this action"
+
     def get_object(self, p_k):
 
         """
@@ -229,6 +259,13 @@ class StudentTakeCourseView(APIView):
             A view function to make a student,
             take a course.
         """
+
+        if request.user.is_staff:
+            return Response(
+                {'error': self.permission_error},
+                status=403
+            )
+
         # Instantiates a student's view class
         student_view = StudentsView()
 
