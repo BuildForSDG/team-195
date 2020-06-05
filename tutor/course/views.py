@@ -11,7 +11,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     '''
     API endpoint that allows courses to be viewed or edited.
     '''
-    authentication_classes = [authentication.BasicAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -25,7 +24,7 @@ class ChapterViewSet(viewsets.ModelViewSet):
     '''
     API endpoint that allows chapters to be viewed or edited.
     '''
-    authentication_classes = [authentication.BasicAuthentication]
+    # authentication_classes = [authentication.BasicAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     parser_classes = (parsers.MultiPartParser, parsers.FormParser, parsers.JSONParser)
     queryset = Chapter.objects.all()
@@ -37,7 +36,7 @@ class GradeViewSet(viewsets.ModelViewSet):
     '''
     API endpoint that allows school grades to be viewed or edited.
     '''
-    authentication_classes = [authentication.BasicAuthentication]
+    # authentication_classes = [authentication.BasicAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Grade.objects.all()
     serializer_class = GradeSerializer

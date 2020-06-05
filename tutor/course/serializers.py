@@ -6,6 +6,14 @@
 
 from rest_framework import serializers
 from .models import Course, Chapter, Grade
+from tutor.users.models import User
+from .validators import ValidateCourses
+
+
+class UserReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username']
 
 
 class GradeSerializer(serializers.ModelSerializer):
@@ -25,20 +33,35 @@ class GradeSerializer(serializers.ModelSerializer):
             }
         }
 
-    def create(self, validated_data):
+    def validate(self, data):
         '''
-        Create the Grade instance
+            Checks if all values passed by tutors are valid
         '''
-        grade = Grade.objects.create(grade_name=validated_data['grade_name'])
-        return grade
 
-    def update(self, instance, validated_data):
-        '''
-        Update the Grade instance
-        '''
-        instance.grade_name = validated_data['grade_name']
-        instance.save()
-        return instance
+        # Checks for space characters
+        have_white_space =\
+            ValidateCourses.check_white_spaces(
+                data['grade_name']
+            )
+
+        if have_white_space:
+            raise serializers.ValidationError(
+                "The grade name shouldn't have"
+                " white spaces before, within or after"
+            )
+
+        # Checks for valid names
+        not_valid_name =\
+            ValidateCourses.check_valid_names(
+                data['grade_name']
+            )
+
+        if not_valid_name:
+            raise serializers.ValidationError(
+                "The grade name should start with an "
+                "uppercase followed by lowercase characters. e.g Four"
+            )
+        return data
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -47,6 +70,8 @@ class CourseSerializer(serializers.ModelSerializer):
     '''
     id = serializers.ReadOnlyField()
     created = serializers.ReadOnlyField()
+    grade = GradeSerializer(read_only=True)
+    created_by = UserReadSerializer(read_only=True)
 
     class Meta:
         model = Course
@@ -57,11 +82,6 @@ class CourseSerializer(serializers.ModelSerializer):
                 "error_messages": {
                     "blank": "Please provide the course name!"
                 }
-            },
-            "grade": {
-                "error_messages": {
-                    "blank": "Please provide grade for the course!"
-                }
             }, "description": {
                 "error_messages": {
                     "blank": "Please provide course description!"
@@ -70,25 +90,35 @@ class CourseSerializer(serializers.ModelSerializer):
 
         }
 
-    def create(self, validated_data):
+    def validate(self, data):
         '''
-        Create the Course instance
+            Checks if all values passed by tutors are valid
         '''
-        course = Course.objects.create(course_name=validated_data['course_name'],
-                                       grade=validated_data['grade'],
-                                       description=validated_data['description'],
-                                       created_by=validated_data['created_by'])
-        return course
 
-    def update(self, instance, validated_data):
-        '''
-        Update the Course instance
-        '''
-        instance.course_name = validated_data['course_name']
-        instance.grade = validated_data['grade']
-        instance.description = validated_data['description']
-        instance.save()
-        return instance
+        # Checks for space characters
+        have_white_space =\
+            ValidateCourses.check_white_spaces(
+                data['course_name']
+            )
+
+        if have_white_space:
+            raise serializers.ValidationError(
+                "The course name shouldn't have"
+                " white spaces before, within or after"
+            )
+
+        # Checks for valid names
+        not_valid_name =\
+            ValidateCourses.check_valid_names(
+                data['course_name']
+            )
+
+        if not_valid_name:
+            raise serializers.ValidationError(
+                "The course name should start with an "
+                "uppercase followed by lowercase characters. e.g English"
+            )
+        return data
 
 
 class ChapterSerializer(serializers.ModelSerializer):
@@ -96,6 +126,7 @@ class ChapterSerializer(serializers.ModelSerializer):
     A class to serialize data from Chapter model
     '''
     id = serializers.ReadOnlyField()
+    course = CourseSerializer(read_only=True)
 
     class Meta:
         model = Chapter
@@ -113,21 +144,32 @@ class ChapterSerializer(serializers.ModelSerializer):
             }
         }
 
-    def create(self, validated_data):
+    def validate(self, data):
         '''
-        Create the Chapter instance
+            Checks if all values passed by tutors are valid
         '''
-        chapter = Chapter.objects.create(chapter_name=validated_data['chapter_name'],
-                                         content=validated_data['content'],
-                                         course=validated_data['course'])
-        return chapter
 
-    def update(self, instance, validated_data):
-        '''
-        Update the Chapter instance
-        '''
-        instance.chapter_name = validated_data['chapter_name']
-        instance.content = validated_data['content']
-        instance.course = validated_data['course']
-        instance.save()
-        return instance
+        # Checks for space characters
+        have_white_space =\
+            ValidateCourses.check_white_spaces(
+                data['chapter_name']
+            )
+
+        if have_white_space:
+            raise serializers.ValidationError(
+                "The chapter name shouldn't have"
+                " white spaces before, within or after"
+            )
+
+        # Checks for valid names
+        not_valid_name =\
+            ValidateCourses.check_valid_names(
+                data['chapter_name']
+            )
+
+        if not_valid_name:
+            raise serializers.ValidationError(
+                "The chapter name should start with an "
+                "uppercase followed by lowercase characters. e.g Algebra"
+            )
+        return data

@@ -3,7 +3,6 @@
 '''
 
 from django.db import models
-from tutor.users.models import User
 
 
 class Grade(models.Model):
@@ -31,6 +30,13 @@ class Course(models.Model):
 
     def __str__(self):
         return "%s %s %s" % (self.course_name, " Grade ", self.grade)
+
+    def __unicode__(self):
+        return self.grade_name
+
+    @property
+    def grade_name(self):
+        return self.grade.grade_name
 
 
 class Chapter(models.Model):
