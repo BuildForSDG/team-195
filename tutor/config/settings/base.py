@@ -65,7 +65,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
     'rest_framework',
-    'rest_framework.authtoken'
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -98,6 +97,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    # 'EXCEPTION_HANDLER':
+    # 'course.utils.custom_authentication_exception_handler',
 }
 # MIGRATIONS
 # ------------------------------------------------------------------------------

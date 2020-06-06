@@ -8,10 +8,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from course.views import TutorAuthentication
 from .serializers import TutorsSerializer, UsersSerializer
+
 
 
 User = get_user_model()
@@ -84,18 +85,13 @@ class TutorsView(APIView):
         A view to add a tutor
     """
 
-    permission_classes = (IsAuthenticated,)
-    permission_error = "You are not allowed to perform this action"
+    permission_classes = (TutorAuthentication,)
 
     def post(self, request):
         """
             This function creates a tutor
         """
-        if not request.user.is_staff:
-            return Response(
-                {'error': self.permission_error},
-                status=403
-            )
+
         serializer = TutorsSerializer(data=request.data)
         # Checks if the request data is valid
         if serializer.is_valid(raise_exception=True):
