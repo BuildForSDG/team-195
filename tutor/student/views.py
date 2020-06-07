@@ -23,7 +23,7 @@ class StudentsView(APIView):
     '''
         Student view class
     '''
-    permission_classes = (StudentAuthentication,)
+    permission_classes = (IsAuthenticated, StudentAuthentication,)
 
     def get_object(self, p_k):
 
