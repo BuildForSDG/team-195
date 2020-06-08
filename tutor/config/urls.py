@@ -4,13 +4,8 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from rest_framework import routers
 from course import views
 
-router = routers.DefaultRouter()
-router.register(r'courses', views.CourseViewSet, basename='course')
-router.register(r'chapters', views.ChapterViewSet, basename='chapter')
-router.register(r'grades', views.GradeViewSet, basename='grade')
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -23,10 +18,8 @@ urlpatterns = [
     path("users/", include("tutor.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('course-chapters/', views.ChapterViewSet.as_view({'get':'list'}), name='course-chapters'),
-    path('course-chapters/<int:course>/', views.ChapterViewSet.as_view({'get':'list'}), name='course-chapters'),
+    path("courses/", include("course.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
