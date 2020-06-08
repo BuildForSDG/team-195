@@ -83,7 +83,7 @@ class StudentsView(APIView):
         student_inastance.delete()
 
         return Response(
-            {"delete_message": self.permission_error},
+            {"delete_message": "The student record has been deleted"},
             status=200
         )
 
