@@ -5,6 +5,7 @@ from rest_framework import serializers
 from .models import Tutors
 from rest_framework import serializers
 from .models import User
+from course.serializers import CourseCreateSerializer
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -37,14 +38,14 @@ class TutorsSerializer(serializers.ModelSerializer):
     '''
         A Model class to serialize Tutors model
     '''
-
+    course_set = CourseCreateSerializer(read_only=True, many=True)
     class Meta:
         '''
            The model and fields to be serialized
         '''
         model = Tutors
         fields = [
-            'user', 'firstname'
+            'user', 'firstname', 'course_set'
         ]
 
     def create(self, validated_data):

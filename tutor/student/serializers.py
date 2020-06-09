@@ -7,7 +7,7 @@
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from course.serializers import CourseSerializer
+from course.serializers import CourseCreateSerializer
 from course.models import Course
 from .models import Students
 from .validators import ValidateStudentData
@@ -19,7 +19,7 @@ class StudentsSerializer(serializers.ModelSerializer):
     '''
         A Model class to serialize student model
     '''
-    course_set = CourseSerializer(read_only=True, many=True)
+    course_set = CourseCreateSerializer(read_only=True, many=True)
     # course_set = serializers.PrimaryKeyRelatedField(
     #     many=True, queryset=Course.objects.all()
     # )

@@ -48,7 +48,11 @@ DATABASES = {
     # "default": env.db(
     #     "DATABASE_URL"
     # ),
-    'extra': {
+    # 'extra': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
+    # }
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
     }

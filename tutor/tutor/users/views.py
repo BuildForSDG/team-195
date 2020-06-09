@@ -1,7 +1,7 @@
 """"
     View classes to add tutors and users
 """
-
+from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,8 +10,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from course.views import TutorAuthentication
+from course.utils import TutorAuthentication
 from .serializers import TutorsSerializer, UsersSerializer
+from .serializers import Tutors
 
 
 
@@ -87,6 +88,18 @@ class TutorsView(APIView):
 
     permission_classes = (TutorAuthentication,)
 
+    def get_object(self, p_k):
+    
+        """
+            Gets tutor's object, incase it doesn't exists
+            it throws an exception the course record wasn't found.
+        """
+
+        try:
+            return Tutors.objects.get(pk=p_k)
+        except Tutors.DoesNotExist:
+            raise Http404
+
     def post(self, request):
         """
             This function creates a tutor
@@ -100,3 +113,14 @@ class TutorsView(APIView):
 
         # Returns an error if one the request data is invalid
         return Response(serializer.errors, status=400)
+
+    def get(self, request, p_k):
+        """
+            Gets a tutor and all the courses he/she created
+        """
+
+        tutor = self.get_object(p_k)
+
+        serialized_tutor = TutorsSerializer(tutor)
+
+        return Response(serialized_tutor.data, status=200)

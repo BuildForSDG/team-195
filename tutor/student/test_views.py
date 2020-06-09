@@ -97,16 +97,32 @@ class TestStudentRegistration():
         return data['user']
 
     @pytest.fixture()
-    def course(self, tutor_token, tutor):
+    def grade(self):
+        '''
+            A fixture that gets a grade's id,
+            uses it to add a course
+        '''
+        response = self.client.post(
+            '/courses/grades/', {
+                "grade_name": "Five",
+            }
+        )
+
+        data = response.content
+        data = loads(data)
+        # returns the grade's id
+        return data['id']
+
+    @pytest.fixture()
+    def course(self, tutor_token, tutor, grade):
         '''
             A fixture that gets a course's id,
             uses the tutor fixture to add a course
         '''
-        # self.c.credentials(HTTP_AUTHORIZATION='Token ' + tutor_token)
         response = self.client.post(
             '/courses/', {
                 "tutor": tutor,
-                "grade": 6,
+                "grade": grade,
                 "course_name": "Algebra",
                 "description": "Introduction to Algebra"
             },
@@ -115,7 +131,7 @@ class TestStudentRegistration():
 
         data = response.content
         data = loads(data)
-
+        print(data)
         # returns the course's id
         return data['id']
 
@@ -696,4 +712,3 @@ class TestStudentRegistration():
         assert data['course_set'][0]["course_name"] == "Algebra"
         assert data['course_set'][0]["description"] == "Introduction to "\
             "Algebra"
-        assert data['course_set'][0]["grade"] == 6
