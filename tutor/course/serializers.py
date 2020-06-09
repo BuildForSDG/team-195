@@ -3,17 +3,9 @@
     and parse json to the view.
 '''
 
-
 from rest_framework import serializers
 from .models import Course, Chapter, Grade
-from tutor.users.models import User
 from .validators import ValidateCourses
-
-
-class UserReadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username']
 
 
 class GradeSerializer(serializers.ModelSerializer):
@@ -125,8 +117,8 @@ class CourseGetSerializer(serializers.ModelSerializer):
     '''
     id = serializers.ReadOnlyField()
     created = serializers.ReadOnlyField()
-    grade_name = serializers.CharField(source='grade.grade_name')
-    created_by = serializers.CharField(source='created_by.username')
+    grade_name = serializers.CharField(source='grade.grade_name', read_only=True)
+    created_by = serializers.CharField(source='created_by.username', read_only=True)
 
     class Meta:
         model = Course
@@ -234,7 +226,7 @@ class ChapterGetSerializer(serializers.ModelSerializer):
     A class to serialize data from Chapter model
     '''
     id = serializers.ReadOnlyField()
-    course = serializers.CharField(source='course.course_name')
+    course = serializers.CharField(source='course.course_name', read_only=True)
 
     class Meta:
         model = Chapter
