@@ -119,11 +119,12 @@ class CourseGetSerializer(serializers.ModelSerializer):
     created = serializers.ReadOnlyField()
     grade_name = serializers.CharField(source='grade.grade_name', read_only=True)
     created_by = serializers.CharField(source='created_by.username', read_only=True)
+    chapters = serializers.SerializerMethodField()
 
     class Meta:
         model = Course
         fields = ['id', 'course_name', 'grade_name', 'description',
-                  'created', 'created_by']
+                  'created', 'created_by', 'chapters']
         extra_kwargs = {
             "course_name": {
                 "error_messages": {
@@ -136,6 +137,12 @@ class CourseGetSerializer(serializers.ModelSerializer):
             },
 
         }
+
+    def get_chapters(self, obj):
+        serializer = ChapterGetSerializer(
+            Chapter.objects.filter(course_id=obj.id), many=True
+        )
+        return serializer.data
 
     def validate(self, data):
         '''
