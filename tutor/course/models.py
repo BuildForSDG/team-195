@@ -1,8 +1,11 @@
 '''
     Model classes to create database tables namely Course, Grade and Chapter.
 '''
-
+from django.conf import settings
 from django.db import models
+from student.models import Students
+from tutor.users.models import Tutors
+
 
 
 class Grade(models.Model):
@@ -23,9 +26,15 @@ class Course(models.Model):
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
-    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    tutor = models.ForeignKey(
+        Tutors, on_delete=models.CASCADE
+    )
+    student = models.ManyToManyField(Students)
 
     class Meta:
+        """
+            Meta class odering courses by date created they were created.
+        """
         ordering = ('-created',)
 
     def __str__(self):
