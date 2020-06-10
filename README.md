@@ -113,7 +113,7 @@ Authorization: Token "theToken"
 ```
 ### Course
 
-#### Craete grade level
+#### Creates a grade level
 ```
 POST /courses/grades/
 ```
@@ -144,11 +144,11 @@ POST /users/students/<int:student_id>/courses/<int:course_id>/take_course
 ```
 
 ## Collaborators
-[Benard Wambua](https://github.com/BernardWambua)
-[Andrew Njaya](https://github.com/Njaya2019)
-[Peter Kuria](https://github.com/peterkuria)
+- [Benard Wambua](https://github.com/BernardWambua)
+- [Andrew Njaya](https://github.com/Njaya2019)
+- [Peter Kuria](https://github.com/peterkuria)
 
 ## References
-[Django documentation](https://docs.djangoproject.com/en/3.0/)
-[Django rest framework](https://www.django-rest-framework.org/)
-[PostgreSQL docs](https://www.postgresql.org/)
+- [Django documentation](https://docs.djangoproject.com/en/3.0/)
+- [Django rest framework](https://www.django-rest-framework.org/)
+- [PostgreSQL docs](https://www.postgresql.org/)
