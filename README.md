@@ -5,7 +5,7 @@
 This is a web API that users can register as tutors and students. The users first have to sign up then they'll have to complete their profile to access it's services.
 
 ## Tutors
-- Can nreate courses
+- Can create courses
 - Can create chapters for each course
 
 ## Students
@@ -94,7 +94,7 @@ GET /users/students/all/
 
 #### Gets a student's record
 ```
-GET /users/students/all/
+GET /users/students/all/<int:student_id>
 ```
 
 #### Delete a student's record
