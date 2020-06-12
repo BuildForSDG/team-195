@@ -4,10 +4,16 @@ Base settings to build other settings files upon.
 import os
 from pathlib import Path
 import environ
+import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# new
+# reading .env file
+environ.Env.read_env()
+
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+
 # tutor/
 APPS_DIR = ROOT_DIR / "tutor"
 env = environ.Env()
@@ -45,13 +51,6 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 
 
 DATABASES = {
-    # "default": env.db(
-    #     "DATABASE_URL"
-    # ),
-    # 'extra': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
-    # }
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
