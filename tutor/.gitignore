@@ -62,8 +62,6 @@ target/
 # pyenv
 .python-version
 
-
-
 # Environments
 .venv
 venv/
