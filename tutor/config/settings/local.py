@@ -1,4 +1,4 @@
-from .base import *  # noqa
+from .base import *
 from .base import env
 
 # GENERAL
@@ -11,7 +11,10 @@ SECRET_KEY = env(
     default="cOZbXTiznCxUnKYzic4MH4bUoUQ1jFO6UAI8KaDljgtnz1NPewjTjMKBSVC7Gb38",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "localhost", "0.0.0.0", "127.0.0.1", '[::1]', ".herokuapp.com"
+]
+
 
 # CACHES
 # ------------------------------------------------------------------------------

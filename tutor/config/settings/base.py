@@ -5,12 +5,18 @@ from pathlib import Path
 import os
 import environ
 
+
+# new
+# reading .env file
+environ.Env.read_env()
+
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+
 # tutor/
 APPS_DIR = ROOT_DIR / "tutor"
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env("DJANGO_READ_DOT_ENV_FILE", default=False)
 
 # OS environment variables take precedence over variables from .env
 env.read_env(str(ROOT_DIR / ".env"))
