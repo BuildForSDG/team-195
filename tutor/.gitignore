@@ -62,13 +62,13 @@ target/
 # pyenv
 .python-version
 
-
-
 # Environments
 .venv
 venv/
 ENV/
+.envs/
 .env
+
 # Rope project settings
 .ropeproject
 
