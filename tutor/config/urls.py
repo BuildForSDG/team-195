@@ -23,6 +23,7 @@ from django.views.generic import TemplateView
 from student.views import StudentsView
 
 
+
 urlpatterns = [
     path('users/students/register', StudentsView.as_view()),
     path(
@@ -38,6 +39,8 @@ urlpatterns = [
     path("users/", include("tutor.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path("courses/", include("course.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

@@ -1,10 +1,12 @@
 """
 Base settings to build other settings files upon.
 """
+import os
 from pathlib import Path
 import os
 import environ
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # new
 # reading .env file
@@ -48,15 +50,15 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db(
-        "DATABASE_URL"
-    ),
-    'extra': {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
-    }
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 }
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+# DATABASES = {
+#     "default": env.db("DATABASE_URL", default="postgres:///tutor")
+# }
+# DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -78,6 +80,8 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    "course",
+    "rest_framework",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",

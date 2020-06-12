@@ -1,0 +1,8 @@
+{
+    "python.linting.enabled": true,
+    "python.pythonPath": "/Users/kgn71188/.virtualenvs/team195/bin/python3.7",
+    "python.linting.pylintArgs": [
+        "--load-plugins=pylint_django"
+    ],
+    "editor.formatOnSave": true
+}
