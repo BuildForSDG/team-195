@@ -48,13 +48,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db(
-        "DATABASE_URL"
-    ),
-    'extra': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
-    }
+    "default": env.db("DATABASE_URL", default="postgres:///tutor")
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
@@ -78,6 +72,7 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    'frontend',
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
