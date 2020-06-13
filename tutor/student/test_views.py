@@ -223,3 +223,52 @@ class TestStudentRegistration():
         assert data["email"] == self.email
         assert data["age"] == 28
         assert data["educationlevel"] == self.educationlevel
+
+    def test_update_student_record(self, student):
+        '''
+            Tests if the student record was successfully modified
+        '''
+
+        response = self.c.put(
+            '/users/students/'+str(student)+'/', {
+                "firstname": 'Fodi',
+                "middlename": 'Obore',
+                "lastname": self.lastname,
+                "Address": self.Address,
+                "email": self.email,
+                "age": 20,
+                "educationlevel": self.educationlevel
+                }
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 200
+        assert data["firstname"] == 'Fodi'
+        assert data["middlename"] == 'Obore'
+        assert data["lastname"] == self.lastname
+        assert data["Address"] == self.Address
+        assert data["email"] == self.email
+        assert data["age"] == 20
+        assert data["educationlevel"] == self.educationlevel
+
+    def test_student_record_notfound(self):
+        '''
+            Tests if the student record dosen't exist
+        '''
+        response = self.c.put(
+            '/users/students/1/', {
+                "firstname": 'Fodi',
+                "middlename": 'Obore',
+                "lastname": self.lastname,
+                "Address": self.Address,
+                "email": self.email,
+                "age": 20,
+                "educationlevel": self.educationlevel
+                }
+        )
+        data = response.content
+        # Changes the response data to a dictionary
+        data = loads(data)
+        assert response.status_code == 404
+        assert data["detail"] == "Not found."
