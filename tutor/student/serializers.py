@@ -199,6 +199,7 @@ class StudentsSerializer(serializers.ModelSerializer):
         instance.educationlevel = validated_data.get(
             'educationlevel'
         )
+
         # returns updated student's instance
 
         return instance

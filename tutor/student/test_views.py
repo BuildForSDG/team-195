@@ -449,8 +449,10 @@ class TestStudentRegistration():
         assert data["educationlevel"] == self.educationlevel
 
     def test_update_student_record(self, student, student_token):
+    # def test_update_student_record(self, student):
+
         '''
-            Tests if the student record was successfully modified
+            Tests if the student record was successfully modified. student_token added
         '''
 
         response = self.api_client.put(
@@ -638,11 +640,7 @@ class TestStudentRegistration():
         response = self.client.get(
             '/users/students/all/?firstname=A',
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
-        )
-        data = response.content
-        # Changes the response data to a dictionary
-        data = loads(data)
-        assert response.status_code == 404
+                }
         assert data["error"] == 'The search results were not found'
 
     def test_firstname_search_results(self, save_student, student_token):

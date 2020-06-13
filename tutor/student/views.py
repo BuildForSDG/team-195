@@ -37,6 +37,20 @@ class StudentsView(APIView):
         except Students.DoesNotExist:
             raise StudentNotFound
 
+    def get_object(self, p_k):
+
+        '''
+            Gets student's object, incase it doesn't exists
+            it throws an exception the student record wasn't found.
+        '''
+
+        try:
+            return Students.objects.get(pk=p_k)
+        except Students.DoesNotExist:
+            raise Http404(
+                'Sorry the student with the id dosen\'t  dosen\'t exist'
+            )
+
     def post(self, request):
 
         """A method to register a student"""
@@ -255,3 +269,4 @@ class StudentTakeCourseView(APIView):
         # to the list of courses the student is already
         # subscribed to.
         return Response(serialized_student.data, status=200)
+
