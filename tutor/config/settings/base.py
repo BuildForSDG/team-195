@@ -83,6 +83,7 @@ DJANGO_APPS = [
     'rest_framework.authtoken',
     "django.forms",
     "course"
+    'frontend',
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",

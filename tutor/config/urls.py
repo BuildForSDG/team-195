@@ -53,6 +53,8 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("accounts/", include("allauth.urls")),
+    #Front urls
+    path('', include('frontend.urls')),
     # Your stuff: custom urls includes go here
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path("courses/", include("course.urls")),
