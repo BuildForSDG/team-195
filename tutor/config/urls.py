@@ -25,10 +25,10 @@ from django.views.generic import TemplateView
 from student.views import StudentsView, StudentTakeCourseView
 from tutor.users.views import AllUsersView
 from tutor.users.views import TutorsView
-from course import views
 
 
 urlpatterns = [
+    path("", include("frontend.urls")),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('users/add/', AllUsersView.as_view()),
     path('users/tutors/register/', TutorsView.as_view()),

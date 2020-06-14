@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
 
 class App extends Component {
   constructor(props) {
@@ -33,12 +32,20 @@ class App extends Component {
 
   render() {
     return (
-      <div>Hello World!</div>
+      <div>
+      
+      <ul>
+      {this.state.data.map(grade => {
+        return (
+          <li key={grade.id}>
+            {grade.id} - {grade.grade_name}
+          </li>
+        );
+      })}
+    </ul>
+    </div>
     );
   }
 }
 
 export default App;
-
-const container = document.getElementById("app");
-render(<App />, container);
