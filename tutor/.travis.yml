@@ -2,14 +2,16 @@ dist: xenial
 
 language: python
 python:
-  - "3.8"
-
+  - "3.6"
+env:
+  TEST_DATABASE: "dbname=test user=postgres host=localhost password=''"
 services:
   - postgresql
 jobs:
   include:
     - name: "Linter"
       before_script:
+        - psql -c 'create database test;' -U postgres
         - pip install -q flake8
       script:
         - "flake8"
@@ -24,8 +26,8 @@ jobs:
         - sudo apt-get install -qq libsqlite3-dev libxml2 libxml2-dev libssl-dev libbz2-dev wget curl llvm
       language: python
       python:
-        - "3.8"
+        - "3.6"
       install:
         - pip install -r requirements/local.txt
       script:
-        - "pytest"
+        - pytest --cov=.
