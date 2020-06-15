@@ -8,9 +8,10 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from course.serializers import CourseCreateSerializer
-from course.models import Course
 from .models import Students
 from .validators import ValidateStudentData
+
+
 
 # A serializer to get and provide student data
 
@@ -20,9 +21,7 @@ class StudentsSerializer(serializers.ModelSerializer):
         A Model class to serialize student model
     '''
     course_set = CourseCreateSerializer(read_only=True, many=True)
-    # course_set = serializers.PrimaryKeyRelatedField(
-    #     many=True, queryset=Course.objects.all()
-    # )
+    # user = UsersSerializer(read_only=True)
     email = serializers.EmailField(
         error_messages={
             "invalid": "Please provide a valid email address"
@@ -43,11 +42,10 @@ class StudentsSerializer(serializers.ModelSerializer):
         '''
         model = Students
         fields = [
-            'user', 'firstname',
-            'middlename', 'lastname',
-            'Address', 'email',
-            'age', 'educationlevel', 'course_set'
+            'user', 'firstname', 'middlename', 'lastname',
+            'Address', 'email', 'age', 'educationlevel', 'course_set'
         ]
+        read_only_fields = ('user',)
         extra_kwargs = {
             "firstname": {
                 "error_messages": {
@@ -167,6 +165,7 @@ class StudentsSerializer(serializers.ModelSerializer):
                 " to register or provide a valid grade school level"
                 " like, 1st-grade, 2nd-grade, 3rd-grade 4, 5..8th-grade"
             )
+    
         return data
 
     def create(self, validated_data):
@@ -174,7 +173,12 @@ class StudentsSerializer(serializers.ModelSerializer):
         '''
             Adds  a new student to the database
         '''
-        newstudent = Students.objects.create(**validated_data)
+        # Gets the authenticated user instance from the request object
+        user = self.context.get("request").user
+
+        newstudent = Students.objects.create(
+            user=user, **validated_data
+        )
 
         return newstudent
 
@@ -184,6 +188,7 @@ class StudentsSerializer(serializers.ModelSerializer):
             Overrides update method of the model serializer
             to updates a student's record.
         '''
+        # Updates instance's fields
         instance.firstname = validated_data.get(
             'firstname'
         )
@@ -200,5 +205,5 @@ class StudentsSerializer(serializers.ModelSerializer):
             'educationlevel'
         )
         # returns updated student's instance
-
+        instance.save()
         return instance

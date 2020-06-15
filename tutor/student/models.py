@@ -5,6 +5,9 @@
 
 from django.db import models
 from django.conf import settings
+from django.apps import apps
+
+Grade = apps.get_model('course', 'Grade', require_ready=False)
 
 
 class Students(models.Model):
@@ -14,7 +17,7 @@ class Students(models.Model):
     '''
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-        primary_key=True,
+        primary_key=True, unique=True
     )
     firstname = models.CharField(max_length=20)
     middlename = models.CharField(max_length=20)
@@ -22,7 +25,9 @@ class Students(models.Model):
     Address = models.CharField(max_length=20)
     email = models.CharField(max_length=30)
     age = models.IntegerField()
-    educationlevel = models.CharField(max_length=20)
+    educationlevel = models.ForeignKey(
+        Grade, on_delete=models.PROTECT
+    )
 
     @staticmethod
     def query_students_by_parameter(

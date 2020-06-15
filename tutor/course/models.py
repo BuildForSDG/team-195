@@ -1,11 +1,9 @@
 '''
     Model classes to create database tables namely Course, Grade and Chapter.
 '''
-from django.conf import settings
 from django.db import models
 from student.models import Students
 from tutor.users.models import Tutors
-
 
 
 class Grade(models.Model):

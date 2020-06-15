@@ -34,7 +34,8 @@ urlpatterns = [
     path('users/tutors/register/', TutorsView.as_view()),
     path('users/tutors/<int:p_k>', TutorsView.as_view()),
     path('users/students/register', StudentsView.as_view()),
-    path('users/students/<int:p_k>/', StudentsView.as_view()),
+    path('users/students/update', StudentsView.as_view()),
+    # path('users/students/<int:p_k>/', StudentsView.as_view()),
     path('users/students/delete/<int:p_k>/', StudentsView.as_view()),
     re_path(r'^users/students/all/(?P<p_k>[0-9]*)$', StudentsView.as_view()),
     path(
@@ -51,7 +52,6 @@ urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path("users/", include("tutor.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

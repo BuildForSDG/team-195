@@ -41,11 +41,9 @@ class TestStudentRegistration():
 
         response = self.client.post(
             '/users/add/', {
-                "email": 'willymzae@gmail.com',
                 "username": 'WillyMzae',
-                "password": "w1984m",
-                "first_name": "Willy",
-                "last_name": "Mzae",
+                "password": "W1984m1$",
+                "confirm_password": "W1984m1$",
                 "is_staff": 'true'
                 }
         )
@@ -65,7 +63,7 @@ class TestStudentRegistration():
         response = self.client.post(
             '/api-token-auth/', {
                 "username": 'WillyMzae',
-                "password": "w1984m",
+                "password": "W1984m1$",
                 }
         )
 
@@ -84,15 +82,23 @@ class TestStudentRegistration():
 
         response = self.client.post(
             '/users/tutors/register/', {
-                "user": user,
+
                 "firstname": "Willy",
+                "middlename": "Mzae",
+                "lastname": "Kisao",
+                "age": 35,
+                "email": "willykisao@gmail.com",
+                "levelofeducation": "University",
+                "employed_at": "Andela",
+                "years_of_experience": 3
+
             },
             HTTP_AUTHORIZATION='Token {}'.format(tutor_token)
         )
 
         data = response.content
         data = loads(data)
-
+        print(data)
         # returns the tutor's id
         return data['user']
 
@@ -145,11 +151,9 @@ class TestStudentRegistration():
 
         response = self.client.post(
             '/users/add/', {
-                "email": 'njayaandrew@gmail.com',
                 "username": 'Andrew',
-                "password": "a1990n",
-                "first_name": "Andrew",
-                "last_name": "Njaya",
+                "password": "A1990n1$",
+                "confirm_password": "A1990n1$",
                 "is_staff": 'false'
                 }
         )
@@ -168,7 +172,7 @@ class TestStudentRegistration():
         response = self.client.post(
             '/api-token-auth/', {
                 "username": 'Andrew',
-                "password": "a1990n",
+                "password": "A1990n1$",
                 }
         )
 
@@ -187,7 +191,6 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -214,7 +217,6 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -241,7 +243,6 @@ class TestStudentRegistration():
 
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": '',
                 "lastname": self.lastname,
@@ -265,7 +266,6 @@ class TestStudentRegistration():
         # self.c.credentials(HTTP_AUTHORIZATION='Token ' + student_token)
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -292,7 +292,6 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": 'and',
                 "lastname": self.lastname,
@@ -320,7 +319,6 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -346,7 +344,6 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": 'Odhi  ambo',
@@ -373,7 +370,6 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -399,7 +395,6 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -425,7 +420,6 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
-                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -454,8 +448,7 @@ class TestStudentRegistration():
         '''
 
         response = self.api_client.put(
-            '/users/students/'+str(student)+'/', {
-                "user": student,
+            '/users/students/update', {
                 "firstname": 'Fodi',
                 "middlename": 'Obore',
                 "lastname": self.lastname,
@@ -484,7 +477,7 @@ class TestStudentRegistration():
             Tests if the student record dosen't exist
         '''
         response = self.client.put(
-            '/users/students/1/', {
+            '/users/students/update', {
                 "firstname": 'Fodi',
                 "middlename": 'Obore',
                 "lastname": self.lastname,

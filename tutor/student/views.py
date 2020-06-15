@@ -41,24 +41,35 @@ class StudentsView(APIView):
 
         """A method to register a student"""
 
-        serializer = StudentsSerializer(data=request.data)
+        try:
+            Students.objects.get(pk=request.user.id)
+            return Response(
+                {"error": " The user is already registered as a student"}, 
+                status=200
+            )
+        except Students.DoesNotExist:
 
-        # Checks if the request data is valid
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=201)
+            serializer = StudentsSerializer(
+                data=request.data,
+                context={'request': request}
+            )
 
-        # Returns an error if one the request data is invlid
-        return Response(serializer.errors, status=400)
+            # Checks if the request data is valid
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response(serializer.data, status=201)
 
-    def put(self, request, p_k):
+            # Returns an error if one the request data is invlid
+            return Response(serializer.errors, status=400)
+
+    def put(self, request):
 
         '''
             A method that updates the student's object,
             and returns the updated values.
         '''
 
-        student = self.get_object(p_k)
+        student = self.get_object(request.user.id)
 
         serializer = StudentsSerializer(student, data=request.data)
 
