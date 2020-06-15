@@ -7,11 +7,9 @@
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from course.serializers import CourseCreateSerializer
+from course.serializers import CourseCreateSerializer, GradeSerializer
 from .models import Students
 from .validators import ValidateStudentData
-
-
 
 # A serializer to get and provide student data
 
@@ -85,8 +83,10 @@ class StudentsSerializer(serializers.ModelSerializer):
             },
             "educationlevel": {
                 "error_messages": {
-                    "required": "Please provide educationlevel key",
-                    "blank": "Please provide education level value"
+                    'does_not_exist': "The primary key you've provided doesn't"
+                                      " exist in grade model",
+                    "incorrect_type": "Please provide primary key of the"
+                                      " grade name as an integer"
                 }
             },
         }
@@ -98,7 +98,7 @@ class StudentsSerializer(serializers.ModelSerializer):
 
         string_values = (
             data['firstname'], data['middlename'],
-            data['lastname'], data['educationlevel']
+            data['lastname']
         )
 
         valid_string_names = (
@@ -154,18 +154,6 @@ class StudentsSerializer(serializers.ModelSerializer):
                 " is 6 and the maximum 40"
             )
 
-        # Check for a valid education level
-        not_valid_level =\
-            ValidateStudentData.check_education_level(
-                data['educationlevel']
-            )
-        if not_valid_level:
-            raise serializers.ValidationError(
-                "Sorry only students in grade school are allowed"
-                " to register or provide a valid grade school level"
-                " like, 1st-grade, 2nd-grade, 3rd-grade 4, 5..8th-grade"
-            )
-    
         return data
 
     def create(self, validated_data):

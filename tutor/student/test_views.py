@@ -183,7 +183,7 @@ class TestStudentRegistration():
         return data['token']
 
     @pytest.fixture()
-    def student(self, user_student, student_token):
+    def student(self, user_student, grade, student_token):
         '''
             A fixture that gets a student's id,
             It's used in tests to test if a student's
@@ -197,7 +197,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": 28,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -209,7 +209,7 @@ class TestStudentRegistration():
         return data['user']
 
     @pytest.fixture()
-    def save_student(self, user_student, student_token):
+    def save_student(self, user_student, grade, student_token):
         '''
             A fixture that registers a student,
             and it's used in tests to test if a student's
@@ -223,7 +223,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": self.age,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -236,7 +236,7 @@ class TestStudentRegistration():
 
     # ------------------------- Testing views ----------------------------
 
-    def test_empty_values(self, user_student, student_token):
+    def test_empty_values(self, user_student, grade, student_token):
         '''
             Tests if some of values passed are empty
         '''
@@ -249,7 +249,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": self.age,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -263,7 +263,6 @@ class TestStudentRegistration():
         '''
             Tests if a valid level of education was provided
         '''
-        # self.c.credentials(HTTP_AUTHORIZATION='Token ' + student_token)
         response = self.client.post(
             '/users/students/register', {
                 "firstname": self.firstname,
@@ -280,13 +279,11 @@ class TestStudentRegistration():
         # Changes the response data to a dictionary
         data = loads(data)
         assert response.status_code == 400
-        assert data["non_field_errors"] == [
-            "Sorry only students in grade school are allowed"
-            " to register or provide a valid grade school level"
-            " like, 1st-grade, 2nd-grade, 3rd-grade 4, 5..8th-grade"
+        assert data["educationlevel"] == [
+            "Please provide primary key of the grade name as an integer"
             ]
 
-    def test_valid_names(self, user_student, student_token):
+    def test_valid_names(self, user_student, grade, student_token):
         '''
             Tests for valid names
         '''
@@ -298,7 +295,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": self.age,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -313,7 +310,7 @@ class TestStudentRegistration():
             " lowercase characters. e.g Andrew"
             ]
 
-    def test_valid_email(self, user_student, student_token):
+    def test_valid_email(self, user_student, grade, student_token):
         '''
             Tests for a valid email
         '''
@@ -325,7 +322,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": "njayaandrewgmail.com",
                 "age": self.age,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -338,7 +335,7 @@ class TestStudentRegistration():
             " address. e.g janedoe125@gmail.com"
             ]
 
-    def test_space_characters(self, user_student, student_token):
+    def test_space_characters(self, user_student, grade, student_token):
         '''
             Tests for a space character
         '''
@@ -350,7 +347,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": self.age,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -364,7 +361,7 @@ class TestStudentRegistration():
             " have white spaces before, after or within"
             ]
 
-    def test_address_value(self, user_student, student_token):
+    def test_address_value(self, user_student, grade, student_token):
         '''
             Tests for an adress value
         '''
@@ -376,7 +373,7 @@ class TestStudentRegistration():
                 "Address": 'california',
                 "email": self.email,
                 "age": self.age,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -389,7 +386,7 @@ class TestStudentRegistration():
             " value.e.g London, Unitedkingdom"
             ]
 
-    def test_age_value(self, user_student, student_token):
+    def test_age_value(self, user_student, grade, student_token):
         '''
             Tests for the age value
         '''
@@ -401,7 +398,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": 1000,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -414,7 +411,7 @@ class TestStudentRegistration():
             " student allowed is 6 and the maximum 40"
             ]
 
-    def test_student_registration(self, user_student, student_token):
+    def test_student_registration(self, user_student, grade, student_token):
         '''
             Tests if the user was successfully registered
         '''
@@ -426,7 +423,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": 28,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -440,9 +437,8 @@ class TestStudentRegistration():
         assert data["Address"] == self.Address
         assert data["email"] == self.email
         assert data["age"] == 28
-        assert data["educationlevel"] == self.educationlevel
 
-    def test_update_student_record(self, student, student_token):
+    def test_update_student_record(self, student, grade, student_token):
         '''
             Tests if the student record was successfully modified
         '''
@@ -455,7 +451,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": 20,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -470,9 +466,8 @@ class TestStudentRegistration():
         assert data["Address"] == self.Address
         assert data["email"] == self.email
         assert data["age"] == 20
-        assert data["educationlevel"] == self.educationlevel
 
-    def test_student_record_notfound(self, user_student, student_token):
+    def test_student_record_notfound(self, user_student, grade, student_token):
         '''
             Tests if the student record dosen't exist
         '''
@@ -484,7 +479,7 @@ class TestStudentRegistration():
                 "Address": self.Address,
                 "email": self.email,
                 "age": 20,
-                "educationlevel": self.educationlevel
+                "educationlevel": grade
             },
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
@@ -509,7 +504,9 @@ class TestStudentRegistration():
         assert response.status_code == 200
         assert data["delete_message"] == "The student record has been deleted"
 
-    def test_delete_student_record_notfound(self, user_student, student_token):
+    def test_delete_student_record_notfound(
+        self, user_student, student_token
+    ):
         '''
             Tests if the student record to be deleted dosen't exist.
         '''
@@ -523,7 +520,9 @@ class TestStudentRegistration():
         assert response.status_code == 404
         assert data["detail"] == "Sorry the student with the id dosen't exist"
 
-    def test_get_all_students_records(self, save_student, student_token):
+    def test_get_all_students_records(
+        self, save_student, student_token
+    ):
         '''
             Tests if all students records are returned.
         '''
@@ -559,7 +558,9 @@ class TestStudentRegistration():
         assert data["Address"] == 'Mombasa, Kenya'
         assert data["email"] == 'njayaandrew@gmail.com'
 
-    def test_get_student_records_notfound(self, user_student, student_token):
+    def test_get_student_records_notfound(
+            self, user_student, student_token
+    ):
         '''
             Tests if a student's records fetched wasn't found.
         '''

@@ -5,10 +5,22 @@
 
 from django.db import models
 from django.conf import settings
-from django.apps import apps
+# from django.apps import apps
 
-Grade = apps.get_model('course', 'Grade', require_ready=False)
+# Grade = apps.get_model('course', 'Grade', require_ready=False)
 
+
+class Grade(models.Model):
+    '''
+    A model to store grade records which is a lookup field in course
+    '''
+    grade_name = models.CharField(max_length=15, unique=True)
+
+    def __str__(self):
+        """
+            Returns the name of the grade level
+        """
+        return '{}'.format(self.grade_name)
 
 class Students(models.Model):
 
