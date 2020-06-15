@@ -12,6 +12,11 @@ export default class SignUp extends Component {
                 </div>
 
                 <div className="form-group">
+                    <label>Middle name</label>
+                    <input type="text" className="form-control" placeholder="Middle name" />
+                </div>
+
+                <div className="form-group">
                     <label>Last name</label>
                     <input type="text" className="form-control" placeholder="Last name" />
                 </div>
@@ -24,6 +29,11 @@ export default class SignUp extends Component {
                 <div className="form-group">
                     <label>Password</label>
                     <input type="password" className="form-control" placeholder="Enter password" />
+                </div>
+
+                <div className="form-group">
+                    <label>Confirm password</label>
+                    <input type="password" className="form-control" placeholder="Confirm password" />
                 </div>
 
                 <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
