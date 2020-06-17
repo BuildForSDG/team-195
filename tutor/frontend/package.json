@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development ./src/index.js --output ./static/frontend/main.js",
+    "dev": "webpack --mode development --watch ./src/index.js --output ./static/frontend/main.js",
     "build": "webpack --mode production ./src/index.js --output ./static/frontend/main.js"
   },
   "keywords": [],
@@ -21,11 +21,16 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "css-loader": "^3.6.0",
     "node-sass": "^4.14.1",
     "react-bootstrap": "^1.0.1",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.88.2",
     "style-loader": "^1.2.1"
   }
