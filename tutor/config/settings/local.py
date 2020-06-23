@@ -11,7 +11,9 @@ SECRET_KEY = env(
     default="cOZbXTiznCxUnKYzic4MH4bUoUQ1jFO6UAI8KaDljgtnz1NPewjTjMKBSVC7Gb38",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "localhost", "0.0.0.0", "127.0.0.1", '[::1]', ".herokuapp.com"
+]
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -49,7 +51,9 @@ INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 # django-extensions
 # ------------------------------------------------------------------------------
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
-INSTALLED_APPS += ["django_extensions"]  # noqa F405
+INSTALLED_APPS += [
+    "django_extensions",
+]  # noqa F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------

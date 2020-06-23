@@ -62,12 +62,11 @@ target/
 # pyenv
 .python-version
 
-
-
 # Environments
 .venv
 venv/
 ENV/
+.env
 
 # Rope project settings
 .ropeproject
@@ -272,6 +271,9 @@ tutor/media/
 .pytest_cache/
 
 
-.env
-.envs/*
-!.envs/.local/
+.env
+
+.envs/*
+
+!.envs/.local/
+
