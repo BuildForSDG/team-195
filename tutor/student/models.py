@@ -5,9 +5,6 @@
 
 from django.db import models
 from django.conf import settings
-# from django.apps import apps
-
-# Grade = apps.get_model('course', 'Grade', require_ready=False)
 
 
 class Grade(models.Model):

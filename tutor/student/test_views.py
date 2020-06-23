@@ -98,7 +98,6 @@ class TestStudentRegistration():
 
         data = response.content
         data = loads(data)
-        print(data)
         # returns the tutor's id
         return data['user']
 
@@ -191,6 +190,7 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
+                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -243,6 +243,7 @@ class TestStudentRegistration():
 
         response = self.client.post(
             '/users/students/register', {
+                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": '',
                 "lastname": self.lastname,
@@ -289,6 +290,7 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
+                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": 'and',
                 "lastname": self.lastname,
@@ -316,6 +318,7 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
+                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -341,6 +344,7 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
+                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": 'Odhi  ambo',
@@ -367,6 +371,7 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
+                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -392,6 +397,7 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
+                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -417,6 +423,7 @@ class TestStudentRegistration():
         '''
         response = self.client.post(
             '/users/students/register', {
+                "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,

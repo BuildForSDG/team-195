@@ -19,7 +19,6 @@ class StudentsSerializer(serializers.ModelSerializer):
         A Model class to serialize student model
     '''
     course_set = CourseCreateSerializer(read_only=True, many=True)
-    # user = UsersSerializer(read_only=True)
     email = serializers.EmailField(
         error_messages={
             "invalid": "Please provide a valid email address"
@@ -97,6 +96,11 @@ class StudentsSerializer(serializers.ModelSerializer):
         '''
 
         string_values = (
+            data['firstname'], data['middlename'],
+            data['lastname']
+        )
+
+        valid_string_names = (
             data['firstname'], data['middlename'],
             data['lastname']
         )
