@@ -45,18 +45,16 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 
 
 DATABASES = {
-    # "default": env.db(
-    #     "DATABASE_URL"
-    # ),
-    # 'extra': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
-    # }
-    'default': {
+    "default": env.db(
+        "DATABASE_URL"
+    ),
+    'extra': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
     }
 }
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
 
 # URLS
 # ------------------------------------------------------------------------------
