@@ -81,6 +81,7 @@ DJANGO_APPS = [
     "django.forms",
     "course",
     'frontend',
+    'knox'
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -99,9 +100,9 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+    ),
     # 'EXCEPTION_HANDLER':
     # 'course.utils.custom_authentication_exception_handler',
 }

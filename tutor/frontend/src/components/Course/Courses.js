@@ -6,7 +6,9 @@ import { getCourses, deleteCourse } from "../../actions/courses.js";
 
 class Courses extends Component {
     static propTypes() {
-        courses: PropTypes.array.isRequired
+        courses: PropTypes.array.isRequired;
+        getCourses: PropTypes.func.isRequired;
+        deleteCourse: PropTypes.func.isRequired;
     };
 
     componentDidMount() {
