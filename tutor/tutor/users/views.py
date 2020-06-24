@@ -37,7 +37,6 @@ class TutorsView(APIView):
     permission_classes = (TutorAuthentication,)
 
     def get_object(self, p_k):
-
         """
             Gets tutor's object, incase it doesn't exists
             it throws an exception the course record wasn't found.

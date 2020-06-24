@@ -82,7 +82,7 @@ class StudentsView(APIView):
         return Response(serializer.errors, status=400)
 
     def delete(self, request, p_k):
-
+    
         '''
             Deletes a student's record else it
             raises an exception, the student record wasn't
