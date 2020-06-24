@@ -58,6 +58,8 @@ DATABASES = {
         'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
     }
 }
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
 
 # URLS
 # ------------------------------------------------------------------------------
