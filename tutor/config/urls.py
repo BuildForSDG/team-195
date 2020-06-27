@@ -16,30 +16,27 @@ Including another URLconf
 
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.authtoken.views import obtain_auth_token
-from rest_framework import routers
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
+from rest_framework.authtoken.views import obtain_auth_token
 from student.views import StudentsView, StudentTakeCourseView
 from tutor.users.views import AllUsersView
 from tutor.users.views import TutorsView
-from course import views
 
 
 urlpatterns = [
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('users/add/', AllUsersView.as_view()),
     path('users/tutors/register/', TutorsView.as_view()),
-    path('users/tutors/<int:p_k>', TutorsView.as_view()),
-    path('users/students/register', StudentsView.as_view()),
-    path('users/students/update', StudentsView.as_view()),
-    # path('users/students/<int:p_k>/', StudentsView.as_view()),
+    path('users/tutors/<int:p_k>/', TutorsView.as_view()),
+    path('users/students/register/', StudentsView.as_view()),
+    path('users/students/update/', StudentsView.as_view()),
     path('users/students/delete/<int:p_k>/', StudentsView.as_view()),
     re_path(r'^users/students/all/(?P<p_k>[0-9]*)$', StudentsView.as_view()),
     path(
-        'users/students/<int:student_id>/courses/<int:course_id>/take_course',
+        'users/student/courses/<int:course_id>/take_course/',
         StudentTakeCourseView.as_view()
     ),
     path(
