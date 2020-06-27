@@ -32,14 +32,13 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('users/add/', AllUsersView.as_view()),
     path('users/tutors/register/', TutorsView.as_view()),
-    path('users/tutors/<int:p_k>', TutorsView.as_view()),
-    path('users/students/register', StudentsView.as_view()),
-    path('users/students/update', StudentsView.as_view()),
-    # path('users/students/<int:p_k>/', StudentsView.as_view()),
+    path('users/tutors/<int:p_k>/', TutorsView.as_view()),
+    path('users/students/register/', StudentsView.as_view()),
+    path('users/students/update/', StudentsView.as_view()),
     path('users/students/delete/<int:p_k>/', StudentsView.as_view()),
     re_path(r'^users/students/all/(?P<p_k>[0-9]*)$', StudentsView.as_view()),
     path(
-        'users/students/<int:student_id>/courses/<int:course_id>/take_course',
+        'users/students/<int:student_id>/courses/<int:course_id>/take_course/',
         StudentTakeCourseView.as_view()
     ),
     path(
