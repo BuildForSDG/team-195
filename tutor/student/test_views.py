@@ -189,7 +189,7 @@ class TestStudentRegistration():
             record was successfully updated.
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
@@ -216,7 +216,7 @@ class TestStudentRegistration():
             record exists.
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -242,7 +242,7 @@ class TestStudentRegistration():
         '''
 
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "user": user_student,
                 "firstname": self.firstname,
                 "middlename": '',
@@ -265,7 +265,7 @@ class TestStudentRegistration():
             Tests if a valid level of education was provided
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "firstname": self.firstname,
                 "middlename": self.middlename,
                 "lastname": self.lastname,
@@ -289,7 +289,7 @@ class TestStudentRegistration():
             Tests for valid names
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "user": user_student,
                 "firstname": self.firstname,
                 "middlename": 'and',
@@ -317,7 +317,7 @@ class TestStudentRegistration():
             Tests for a valid email
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
@@ -343,7 +343,7 @@ class TestStudentRegistration():
             Tests for a space character
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
@@ -370,7 +370,7 @@ class TestStudentRegistration():
             Tests for an adress value
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
@@ -396,7 +396,7 @@ class TestStudentRegistration():
             Tests for the age value
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
@@ -422,7 +422,7 @@ class TestStudentRegistration():
             Tests if the user was successfully registered
         '''
         response = self.client.post(
-            '/users/students/register', {
+            '/users/students/register/', {
                 "user": user_student,
                 "firstname": self.firstname,
                 "middlename": self.middlename,
@@ -451,7 +451,7 @@ class TestStudentRegistration():
         '''
 
         response = self.api_client.put(
-            '/users/students/update', {
+            '/users/students/update/', {
                 "firstname": 'Fodi',
                 "middlename": 'Obore',
                 "lastname": self.lastname,
@@ -479,7 +479,7 @@ class TestStudentRegistration():
             Tests if the student record dosen't exist
         '''
         response = self.client.put(
-            '/users/students/update', {
+            '/users/students/update/', {
                 "firstname": 'Fodi',
                 "middlename": 'Obore',
                 "lastname": self.lastname,
@@ -669,7 +669,7 @@ class TestStudentRegistration():
             Tests for firstname query search results.
         '''
         response = self.client.post(
-            '/users/students/'+str(student)+'/courses/2/take_course',
+            '/users/student/courses/2/take_course/',
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
         data = response.content
@@ -686,7 +686,7 @@ class TestStudentRegistration():
             Tests for firstname query search results.
         '''
         response = self.client.post(
-            '/users/students/1/courses/'+str(course)+'/take_course',
+            '/users/student/courses/'+str(course)+'/take_course/',
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
         data = response.content
@@ -702,8 +702,7 @@ class TestStudentRegistration():
             Tests for firstname query search results.
         '''
         response = self.client.post(
-            "/users/students/"+str(student)+"/courses/"
-            + str(course)+"/take_course",
+            "/users/student/courses/"+str(course)+"/take_course/",
             HTTP_AUTHORIZATION='Token {}'.format(student_token)
         )
         data = response.content

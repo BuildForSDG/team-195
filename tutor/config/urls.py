@@ -38,7 +38,7 @@ urlpatterns = [
     path('users/students/delete/<int:p_k>/', StudentsView.as_view()),
     re_path(r'^users/students/all/(?P<p_k>[0-9]*)$', StudentsView.as_view()),
     path(
-        'users/students/<int:student_id>/courses/<int:course_id>/take_course/',
+        'users/student/courses/<int:course_id>/take_course/',
         StudentTakeCourseView.as_view()
     ),
     path(

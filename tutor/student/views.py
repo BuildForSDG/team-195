@@ -239,7 +239,7 @@ class StudentTakeCourseView(APIView):
         except Course.DoesNotExist:
             raise CourseNotFound
 
-    def post(self, request, student_id, course_id):
+    def post(self, request, course_id):
         """
             A view function to make a student,
             take a course.
@@ -249,7 +249,7 @@ class StudentTakeCourseView(APIView):
         student_view = StudentsView()
 
         # Gets the student's instance
-        student_instance = student_view.get_object(student_id)
+        student_instance = student_view.get_object(request.user.id)
 
         # Get's a course instance
         course_instance = self.get_object(course_id)
