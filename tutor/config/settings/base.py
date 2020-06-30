@@ -12,6 +12,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # reading .env file
 environ.Env.read_env()
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 # tutor/
@@ -57,6 +59,8 @@ DATABASES = {
         'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
     }
 }
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
 
 # URLS
 # ------------------------------------------------------------------------------

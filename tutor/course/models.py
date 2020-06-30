@@ -1,21 +1,9 @@
 '''
     Model classes to create database tables namely Course, Grade and Chapter.
 '''
-from django.conf import settings
 from django.db import models
-from student.models import Students
+from student.models import Students, Grade
 from tutor.users.models import Tutors
-
-
-
-class Grade(models.Model):
-    '''
-    A model to store grade records which is a lookup field in course
-    '''
-    grade_name = models.CharField(max_length=15, unique=True)
-
-    def __str__(self):
-        return self.grade_name
 
 
 class Course(models.Model):

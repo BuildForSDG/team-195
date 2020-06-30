@@ -7,6 +7,18 @@ from django.db import models
 from django.conf import settings
 
 
+class Grade(models.Model):
+    '''
+    A model to store grade records which is a lookup field in course
+    '''
+    grade_name = models.CharField(max_length=15, unique=True)
+
+    def __str__(self):
+        """
+            Returns the name of the grade level
+        """
+        return '{}'.format(self.grade_name)
+
 class Students(models.Model):
 
     '''
@@ -14,7 +26,7 @@ class Students(models.Model):
     '''
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-        primary_key=True,
+        primary_key=True, unique=True
     )
     firstname = models.CharField(max_length=20)
     middlename = models.CharField(max_length=20)
@@ -22,7 +34,9 @@ class Students(models.Model):
     Address = models.CharField(max_length=20)
     email = models.CharField(max_length=30)
     age = models.IntegerField()
-    educationlevel = models.CharField(max_length=20)
+    educationlevel = models.ForeignKey(
+        Grade, on_delete=models.PROTECT
+    )
 
     @staticmethod
     def query_students_by_parameter(
