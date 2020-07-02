@@ -17,6 +17,21 @@ urlpatterns = [
     # grades
     path('grades/', views.GradeList.as_view()),
     path('grades/<int:pk>/', views.GradeDetail.as_view()),
+    # Posts
+    path(
+        'course_forum/course/<int:course_id>/post/',
+        views.PostsView.as_view()
+    ),
+    # View all posts url
+    path(
+        'course_forum/course/<int:course_id>/posts/',
+        views.PostsView.as_view()
+    ),
+    # Edit a post url
+    path(
+        'course_forum/course/<int:course_id>/post/<int:post_id>/edit/',
+        views.PostsView.as_view()
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

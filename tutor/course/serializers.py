@@ -4,7 +4,7 @@
 '''
 
 from rest_framework import serializers
-from .models import Course, Chapter, Grade
+from .models import Course, Chapter, Grade, Posts, Tutors
 from .validators import ValidateCourses
 
 
@@ -170,6 +170,10 @@ class CourseCreateSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     created = serializers.ReadOnlyField()
     chapter_set = ChapterCreateSerializer(read_only=True, many=True)
+    tutor = serializers.CharField(
+        source='tutor.username', read_only=True
+    )
+
     class Meta:
         model = Course
         fields = ['id', 'course_name', 'grade', 'description',
@@ -217,6 +221,21 @@ class CourseCreateSerializer(serializers.ModelSerializer):
             )
         return data
 
+    def create(self, validated_data):
+    
+        '''
+            Adds  a new course
+        '''
+        # Gets the authenticated user instance from the request object
+        tutor_id = self.context.get("request").user.id
+        tutor_object = Tutors.objects.get(pk=tutor_id)
+
+        new_course = Course.objects.create(
+            **validated_data, tutor=tutor_object
+        )
+
+        return new_course
+
 
 class CourseGetSerializer(serializers.ModelSerializer):
     '''
@@ -225,7 +244,7 @@ class CourseGetSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     created = serializers.ReadOnlyField()
     grade_name = serializers.CharField(source='grade.grade_name', read_only=True)
-    tutor = serializers.CharField(source='tutor.username', read_only=True)
+    tutor = serializers.CharField(source='tutor.user.username', read_only=True)
     chapters = serializers.SerializerMethodField()
 
     class Meta:
@@ -280,3 +299,56 @@ class CourseGetSerializer(serializers.ModelSerializer):
                 "uppercase followed by lowercase characters. e.g English"
             )
         return data
+
+
+class PostsSerrializers(serializers.ModelSerializer):
+    """
+        A serializer to serialize the massage data
+        passed by the user to the specific course forum section.
+    """
+    user_name = serializers.CharField(
+        source='user_id.username', read_only=True
+    )
+    class Meta:
+        """
+            The model to be serialized and validation errors messages
+            of the fields.
+        """
+        model = Posts
+        fields = ['id', 'post', 'user_name']
+        extra_kwargs = {
+            "post": {
+                "error_messages": {
+                    "blank": "Please provide something to post"
+                }
+            },
+        }
+
+    def create(self, validated_data):
+
+        '''
+            Adds  a new post to the course forum
+        '''
+        # Gets the authenticated user instance from the request object
+        user = self.context.get("request").user
+        course = self.context.get('course_id')
+
+        new_post = Posts.objects.create(
+            **validated_data, user_id=user, course_id=course
+        )
+
+        return new_post
+
+    def update(self, instance, validated_data):
+
+        '''
+            Overrides update method of the model serializer
+            to updates a post's record.
+        '''
+        # Updates instance field
+        instance.post = validated_data.get(
+            'post'
+        )
+        # returns updated post's instance
+        instance.save()
+        return instance

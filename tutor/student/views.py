@@ -59,7 +59,7 @@ class StudentsView(APIView):
                 serializer.save()
                 return Response(serializer.data, status=201)
 
-            # Returns an error if one the request data is invlid
+            # Returns an error if one the request data is invalid
             return Response(serializer.errors, status=400)
 
     def put(self, request):

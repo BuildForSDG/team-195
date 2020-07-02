@@ -2,16 +2,20 @@
 Generic views to provide endpoints for Course, Chapter and Grade APIs
 '''
 from rest_framework import views, response, status
+from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from course import serializers
-from .models import Course, Chapter, Grade
+from .models import Course, Chapter, Grade, Tutors, Students, Posts
+from .serializers import PostsSerrializers
+from .utils import TutorAuthentication
+
 
 
 class CourseList(views.APIView):
     """
     List all courses, or create a new course.
     """
-
+    permission_classes = (IsAuthenticated, TutorAuthentication,)
     def get(self, request):
         '''
         A get method to list all courses
@@ -24,7 +28,12 @@ class CourseList(views.APIView):
         '''
         A post method to create a course
         '''
-        serializer = serializers.CourseCreateSerializer(data=request.data)
+        serializer = serializers.CourseCreateSerializer(
+            data=request.data,
+            context={
+                'request': request
+            }
+        )
         if serializer.is_valid():
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -203,3 +212,185 @@ class GradeDetail(views.APIView):
         grade = self.get_object(pk)
         grade.delete()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PostsView(views.APIView):
+    """
+        An API view which makes subscribed users to
+        communicate by exchanging texts on the course.
+    """
+
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, pk):
+        '''
+        A get_object method to return a post instance
+        '''
+        try:
+            return Posts.objects.get(pk=pk)
+        except Posts.DoesNotExist:
+            raise Http404
+
+    def post(self, request, course_id):
+        """
+            This makes subscribed users to write texts
+        """
+        courses_view = CourseDetail()
+        course_instance = courses_view.get_object(course_id)
+
+        student_object = Students.objects.filter(pk=request.user.id)
+        tutor_object = Tutors.objects.filter(pk=request.user.id)
+
+        if tutor_object:
+            tutor_object = Tutors.objects.get(pk=request.user.id)
+
+            if tutor_object.course_set.filter(id=course_id).exists():
+
+                serializer = PostsSerrializers(
+                    data=request.data,
+                    context={
+                        'request': request, 'course_id': course_instance
+                    }
+                )
+
+                # Checks if the request data is valid
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save()
+                    return response.Response(serializer.data, status=201)
+
+                # Returns an error if one the request data is invalid
+                return response.Response(serializer.errors, status=400)
+            else:
+                return response.Response(
+                    {
+                        "error": "Only a tutor who created this course can "
+                                 "post"
+                    },
+                    status=400
+                    )
+        elif student_object:
+
+            student_object = Students.objects.get(pk=request.user.id)
+
+            if student_object.course_set.filter(id=course_id).exists():
+
+                serializer = PostsSerrializers(
+                    data=request.data,
+                    context={
+                        'request': request, 'course_id': course_instance
+                    }
+                )
+
+                # Checks if the request data is valid
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save()
+                    return response.Response(serializer.data, status=201)
+
+                # Returns an error if one the request data is invalid
+                return response.Response(serializer.errors, status=400)
+            else:
+                return response.Response(
+                    {
+                        "error": "Only students subscribed to this course can"
+                                 " post."
+                    },
+                    status=400
+                    )
+        else:
+            return response.Response(
+                {
+                    "error": "The user should register as a tutor or student"
+                             " to post."
+                },
+                status=400
+                )
+    def get(self, request, course_id):
+        """
+            Get all posts in a particular course forum
+        """
+        posts = Posts.objects.filter(course_id=course_id)
+
+        serializer = PostsSerrializers(posts, many=True)
+
+        return response.Response(serializer.data, status=200)
+
+    def put(self, request, course_id, post_id):
+        '''
+            A method that updates the posts's object,
+            and returns the updated values.
+        '''
+        courses_view = CourseDetail()
+        courses_view.get_object(course_id)
+
+        student_object = Students.objects.filter(pk=request.user.id)
+        tutor_object = Tutors.objects.filter(pk=request.user.id)
+
+        post_instance = self.get_object(post_id)
+
+        if tutor_object:
+            tutor_object = Tutors.objects.get(pk=request.user.id)
+
+            if tutor_object.course_set.filter(id=course_id).exists():
+
+                if post_instance.user_id.id != request.user.id:
+                    return response.Response({
+                        "error": "You can not edit other user's posts"
+                    })
+                serializer = PostsSerrializers(
+                    post_instance,
+                    data=request.data,
+                )
+                # Checks if the request data passed is valid
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save()
+                    return response.Response(serializer.data, status=200)
+
+                # Returns an error if one the of the request data value is invlid
+                return response.Response(serializer.errors, status=400)
+            else:
+                return response.Response(
+                    {
+                        "error": "Sorry a tutor who posted it, can only"
+                                 " edit it"
+                    },
+                    status=400
+                    )
+
+        elif student_object:
+            student_object = Students.objects.get(pk=request.user.id)
+
+            if student_object.course_set.filter(id=course_id).exists():
+
+                if post_instance.user_id != request.user.id:
+                    return response.Response({
+                        "error": "You can not edit other student's posts"
+                    })
+
+                serializer = PostsSerrializers(
+                    post_instance,
+                    data=request.data
+                )
+
+                # Checks if the request data is valid
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save()
+                    return response.Response(serializer.data, status=201)
+
+                # Returns an error if one the request data is invalid
+                return response.Response(serializer.errors, status=400)
+            else:
+                return response.Response(
+                    {
+                        "error": "Sorry a student subscribed to this"
+                                 " course can edit this post."
+                    },
+                    status=400
+                    )
+        else:
+            return response.Response(
+                {
+                    "error": "You should register as a tutor or student"
+                             " to edit his/her post."
+                },
+                status=400
+                )
