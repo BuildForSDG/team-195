@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_COURSES, DELETE_COURSE, ADD_COURSE, GET_GRADES } from "./types";
+import { GET_COURSES, DELETE_COURSE, ADD_COURSE } from "./types";
 import courses from "../reducers/courses";
 
 // Get Courses
@@ -30,18 +30,6 @@ export const addCourse = (course) => dispatch => {
         .then(res => {
             dispatch({
                 type: ADD_COURSE,
-                payload: res.data
-            });
-        }).catch(err => console.log(err));
-};
-
-
-// Get Grades
-export const getGrades = () => dispatch => {
-    axios.get('/courses/grades/')
-        .then(res => {
-            dispatch({
-                type: GET_GRADES,
                 payload: res.data
             });
         }).catch(err => console.log(err));
