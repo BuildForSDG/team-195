@@ -82,7 +82,7 @@ DJANGO_APPS = [
     "django.contrib.admin",
     'rest_framework.authtoken',
     "django.forms",
-    "course"
+    "course",
     'frontend',
     'knox'
 ]
