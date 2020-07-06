@@ -53,6 +53,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 
 
 DATABASES = {
+
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
@@ -103,9 +104,9 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+    ),
     # 'EXCEPTION_HANDLER':
     # 'course.utils.custom_authentication_exception_handler',
 }
