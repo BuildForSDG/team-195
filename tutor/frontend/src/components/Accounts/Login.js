@@ -5,7 +5,7 @@ export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            email: "",
+            username: "",
             password: "",
         }
         this.onChange = this.onChange.bind(this);
@@ -18,49 +18,54 @@ export default class Login extends Component {
         console.log("submit")
     };
     render() {
-        const { email, password } = this.state;
+        const { username, password } = this.state;
         return (
-            <form>
-                <h3>Login</h3>
+            <div className="col-md-6 m-auto">
+                <div className="card card-body mt-5">
+                    <h2 className="text-center">Login</h2>
+                    <form onSubmit={this.onSubmit}>
 
-                <div className="form-group">
-                    <label>Email address</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        placeholder="Enter email"
-                        name="email"
-                        onChange={this.onChange}
-                        value={email}
-                    />
-                </div>
 
-                <div className="form-group">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        placeholder="Enter password"
-                        name="password"
-                        onChange={this.onChange}
-                        value={password}
-                    />
-                </div>
+                        <div className="form-group">
+                            <label>Username</label>
+                            <input
+                                type="username"
+                                className="form-control"
+                                placeholder="Username"
+                                name="username"
+                                onChange={this.onChange}
+                                value={username}
+                            />
+                        </div>
 
-                <div className="form-group">
-                    <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                    </div>
-                </div>
+                        <div className="form-group">
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                placeholder="Enter password"
+                                name="password"
+                                onChange={this.onChange}
+                                value={password}
+                            />
+                        </div>
 
-                <button type="submit" className="btn btn-primary btn-block">Login</button>
-                <p>
-                    Don't have an account?
+                        <div className="form-group">
+                            <div className="custom-control custom-checkbox">
+                                <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                                <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" className="btn btn-primary btn-block">Login</button>
+                        <p>
+                            Don't have an account?
                     <Link to="/register"
-                        className="nav-link">Register</Link>
-                </p>
-            </form>
+                                className="nav-link">Register</Link>
+                        </p>
+                    </form>
+                </div>
+            </div>
         );
     }
 }

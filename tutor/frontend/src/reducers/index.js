@@ -5,5 +5,6 @@ import auth from "./auth";
 
 export default combineReducers({
     courses,
-    grades
+    grades,
+    auth
 });

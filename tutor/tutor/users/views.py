@@ -4,6 +4,7 @@
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from course.utils import TutorAuthentication
 from .serializers import TutorsSerializer, UsersSerializer
 from .serializers import Tutors
@@ -79,3 +80,4 @@ class TutorsView(APIView):
         serialized_tutor = TutorsSerializer(tutor)
 
         return Response(serialized_tutor.data, status=200)
+

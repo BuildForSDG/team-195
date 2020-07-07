@@ -8,6 +8,7 @@ import GradeDashboard from "./Grade/GradeDashboard"
 
 import Register from "./Accounts/Register";
 import Login from "./Accounts/Login";
+import PrivateRoute from "./common/PrivateRoute";
 
 import { Provider } from "react-redux";
 import store from "../store";
@@ -21,7 +22,7 @@ class App extends Component {
                         <Header />
                         <div className="container">
                             <Switch>
-                                <Route exact path="/" component={GradeDashboard} />
+                                <PrivateRoute exact path="/" component={Dashboard} />
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/login" component={Login} />
                             </Switch>
