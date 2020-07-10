@@ -1,29 +1,41 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from 'prop-types';
+import { login } from "../../actions/auth"
 
-export default class Login extends Component {
+
+class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
             username: "",
             password: "",
         }
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     };
 
-    onChange(e) { this.setState({ [e.target.name]: e.target.value }); }
-    onSubmit(e) {
-        e.preventDefaut();
-        console.log("submit")
+    static propTypes() {
+        login: PropTypes.func.isRequired;
+        isAuthenticated: PropTypes.bool;
+    }
+
+    handleChange(e) { this.setState({ [e.target.name]: e.target.value }); }
+    handleSubmit(e) {
+        event.preventDefault();
+        this.props.login(this.state.username, this.state.password);
     };
     render() {
+        if (this.props.isAuthenticated) {
+            return <Redirect to="/" />
+        }
         const { username, password } = this.state;
         return (
             <div className="col-md-6 m-auto">
                 <div className="card card-body mt-5">
                     <h2 className="text-center">Login</h2>
-                    <form onSubmit={this.onSubmit}>
+                    <form onSubmit={this.handleSubmit}>
 
 
                         <div className="form-group">
@@ -33,7 +45,7 @@ export default class Login extends Component {
                                 className="form-control"
                                 placeholder="Username"
                                 name="username"
-                                onChange={this.onChange}
+                                onChange={this.handleChange}
                                 value={username}
                             />
                         </div>
@@ -45,7 +57,7 @@ export default class Login extends Component {
                                 className="form-control"
                                 placeholder="Enter password"
                                 name="password"
-                                onChange={this.onChange}
+                                onChange={this.handleChange}
                                 value={password}
                             />
                         </div>
@@ -69,3 +81,9 @@ export default class Login extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { login })(Login);

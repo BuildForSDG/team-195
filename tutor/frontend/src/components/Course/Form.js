@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import GradesDropDown from "../Grade/Grade";
+import GradeSelect from "./GradeSelect";
 import { addCourse } from "../../actions/courses";
 
 
@@ -49,13 +49,7 @@ class Form extends Component {
                     </div>
                     <div className="form-group">
                         <label>Grade</label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            name="grade"
-                            onChange={this.handleChange}
-                            value={grade}
-                        />
+                        <GradeSelect />
                     </div>
                     <div className="form-group">
                         <label>Description</label>

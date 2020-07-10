@@ -8,5 +8,6 @@ export default function Dashboard() {
             <Form />
             <Courses />
         </Fragment>
+
     )
 }

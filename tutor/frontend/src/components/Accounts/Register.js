@@ -1,7 +1,11 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from 'prop-types';
+import { register } from "../../actions/auth"
 
-export default class Register extends Component {
+
+class Register extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -13,6 +17,10 @@ export default class Register extends Component {
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     };
+    static propTypes() {
+        register: PropTypes.func.isRequired;
+        isAuthenticated: PropTypes.bool;
+    }
 
     onChange(e) { this.setState({ [e.target.name]: e.target.value }); }
     onSubmit(e) {
@@ -87,3 +95,9 @@ export default class Register extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { register })(Register);

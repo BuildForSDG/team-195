@@ -26,7 +26,7 @@ class Courses extends Component {
                             <th>Grade</th>
                             <th>Description</th>
                             <th>Tutor</th>
-                            <th>Chapters</th>
+
                             <th />
                         </tr>
                     </thead>
@@ -37,7 +37,6 @@ class Courses extends Component {
                                 <td>{course.grade_name}</td>
                                 <td>{course.description}</td>
                                 <td>{course.tutor}</td>
-                                <td>{course.chapters}</td>
                                 <td><button onClick=
                                     {this.props.deleteCourse.bind(this, course.id)}
                                     className="btn btn-danger btn-sm">
