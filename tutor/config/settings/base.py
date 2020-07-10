@@ -53,6 +53,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 
 
 DATABASES = {
+
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
@@ -82,7 +83,9 @@ DJANGO_APPS = [
     "django.contrib.admin",
     'rest_framework.authtoken',
     "django.forms",
-    "course"
+    "course",
+    'frontend',
+    'knox'
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",

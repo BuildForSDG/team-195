@@ -25,10 +25,10 @@ from django.views.generic import TemplateView
 from student.views import StudentsView, StudentTakeCourseView
 from tutor.users.views import AllUsersView
 from tutor.users.views import TutorsView
-from course import views
 
 
 urlpatterns = [
+    path("", include("frontend.urls")),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('users/add/', AllUsersView.as_view()),
     path('users/tutors/register/', TutorsView.as_view()),
@@ -53,6 +53,8 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("accounts/", include("allauth.urls")),
+    #Front urls
+    path('', include('frontend.urls')),
     # Your stuff: custom urls includes go here
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path("courses/", include("course.urls")),
