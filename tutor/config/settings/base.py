@@ -103,8 +103,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    # 'EXCEPTION_HANDLER':
-    # 'course.utils.custom_authentication_exception_handler',
+    # 'EXCEPTION_HANDLER': 'course.utils.custom_exception_handler'
 }
 # MIGRATIONS
 # ------------------------------------------------------------------------------

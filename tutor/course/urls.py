@@ -20,17 +20,17 @@ urlpatterns = [
     # Posts
     path(
         'course_forum/course/<int:course_id>/post/',
-        views.PostsView.as_view()
+        views.PostsView.as_view({'post': 'create'})
     ),
     # View all posts url
     path(
         'course_forum/course/<int:course_id>/posts/',
-        views.PostsView.as_view()
+        views.PostsView.as_view({'get': 'list'})
     ),
     # Edit a post url
     path(
         'course_forum/course/<int:course_id>/post/<int:post_id>/edit/',
-        views.PostsView.as_view()
+        views.PostsView.as_view({'put': 'update'})
     ),
 ]
 

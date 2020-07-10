@@ -188,7 +188,11 @@ class CourseCreateSerializer(serializers.ModelSerializer):
                     "blank": "Please provide course description!"
                 }
             },
-
+            "grade": {
+                "error_messages": {
+                    "does_not_exist": "The grade class doesn't exist"
+                }
+            },
         }
 
     def validate(self, data):
@@ -235,70 +239,6 @@ class CourseCreateSerializer(serializers.ModelSerializer):
         )
 
         return new_course
-
-
-class CourseGetSerializer(serializers.ModelSerializer):
-    '''
-    A class to serialize data from Course model
-    '''
-    id = serializers.ReadOnlyField()
-    created = serializers.ReadOnlyField()
-    grade_name = serializers.CharField(source='grade.grade_name', read_only=True)
-    tutor = serializers.CharField(source='tutor.user.username', read_only=True)
-    chapters = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Course
-        fields = ['id', 'course_name', 'grade_name', 'description',
-                  'created', 'tutor', 'chapters']
-        extra_kwargs = {
-            "course_name": {
-                "error_messages": {
-                    "blank": "Please provide the course name!"
-                }
-            }, "description": {
-                "error_messages": {
-                    "blank": "Please provide course description!"
-                }
-            },
-
-        }
-
-    def get_chapters(self, obj):
-        serializer = ChapterGetSerializer(
-            Chapter.objects.filter(course_id=obj.id), many=True
-        )
-        return serializer.data
-
-    def validate(self, data):
-        '''
-            Checks if all values passed by tutors are valid
-        '''
-
-        # Checks for space characters
-        have_white_space =\
-            ValidateCourses.check_white_spaces(
-                data['course_name']
-            )
-
-        if have_white_space:
-            raise serializers.ValidationError(
-                "The course name shouldn't have"
-                " white spaces before, within or after"
-            )
-
-        # Checks for valid names
-        not_valid_name =\
-            ValidateCourses.check_valid_names(
-                data['course_name']
-            )
-
-        if not_valid_name:
-            raise serializers.ValidationError(
-                "The course name should start with an "
-                "uppercase followed by lowercase characters. e.g English"
-            )
-        return data
 
 
 class PostsSerrializers(serializers.ModelSerializer):
@@ -352,3 +292,68 @@ class PostsSerrializers(serializers.ModelSerializer):
         # returns updated post's instance
         instance.save()
         return instance
+
+
+class CourseGetSerializer(serializers.ModelSerializer):
+    '''
+    A class to serialize data from Course model
+    '''
+    id = serializers.ReadOnlyField()
+    created = serializers.ReadOnlyField()
+    grade_name = serializers.CharField(source='grade.grade_name', read_only=True)
+    tutor = serializers.CharField(source='tutor.user.username', read_only=True)
+    chapters = serializers.SerializerMethodField()
+    posts_set = PostsSerrializers(read_only=True, many=True)
+
+    class Meta:
+        model = Course
+        fields = ['id', 'course_name', 'grade_name', 'description',
+                  'created', 'tutor', 'chapters', 'posts_set']
+        extra_kwargs = {
+            "course_name": {
+                "error_messages": {
+                    "blank": "Please provide the course name!"
+                }
+            },
+            "description": {
+                "error_messages": {
+                    "blank": "Please provide course description!"
+                }
+            },
+        }
+
+    def get_chapters(self, obj):
+        serializer = ChapterGetSerializer(
+            Chapter.objects.filter(course_id=obj.id), many=True
+        )
+        return serializer.data
+
+    def validate(self, data):
+        '''
+            Checks if all values passed by tutors are valid
+        '''
+
+        # Checks for space characters
+        have_white_space =\
+            ValidateCourses.check_white_spaces(
+                data['course_name']
+            )
+
+        if have_white_space:
+            raise serializers.ValidationError(
+                "The course name shouldn't have"
+                " white spaces before, within or after"
+            )
+
+        # Checks for valid names
+        not_valid_name =\
+            ValidateCourses.check_valid_names(
+                data['course_name']
+            )
+
+        if not_valid_name:
+            raise serializers.ValidationError(
+                "The course name should start with an "
+                "uppercase followed by lowercase characters. e.g English"
+            )
+        return data

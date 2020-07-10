@@ -54,7 +54,7 @@ class TutorsView(APIView):
 
         try:
             Tutors.objects.get(pk=request.user.id)
-            return Response({"error": "student registered"})
+            return Response({"error": "The user is already registered as a tutor"})
         except Tutors.DoesNotExist:
 
             serializer = TutorsSerializer(
