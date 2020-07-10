@@ -4,6 +4,7 @@
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from course.utils import TutorAuthentication
 from .serializers import TutorsSerializer, UsersSerializer
 from .serializers import Tutors
@@ -79,3 +80,22 @@ class TutorsView(APIView):
         serialized_tutor = TutorsSerializer(tutor)
 
         return Response(serialized_tutor.data, status=200)
+
+
+class LogoutView(APIView):
+    """
+        This view logs users out
+    """
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        """
+            Gets the authenticated user and
+            deletes the token.
+        """
+
+        # This deletes the token and forces a login
+        request.user.auth_token.delete()
+        return Response(
+            {'logout_message': 'Succesfully logged out'},
+            status=200
+        )

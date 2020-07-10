@@ -16,20 +16,19 @@ Including another URLconf
 
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.authtoken.views import obtain_auth_token
-from rest_framework import routers
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
+from rest_framework.authtoken.views import obtain_auth_token
 from student.views import StudentsView, StudentTakeCourseView
-from tutor.users.views import AllUsersView
-from tutor.users.views import TutorsView
+from tutor.users.views import AllUsersView, TutorsView, LogoutView
 from course import views
 
 
 urlpatterns = [
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('logout/', LogoutView.as_view()),
     path('users/add/', AllUsersView.as_view()),
     path('users/tutors/register/', TutorsView.as_view()),
     path('users/tutors/<int:p_k>', TutorsView.as_view()),
