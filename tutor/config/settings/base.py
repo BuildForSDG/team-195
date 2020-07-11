@@ -4,7 +4,6 @@ Base settings to build other settings files upon.
 import os
 from pathlib import Path
 import environ
-import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -104,8 +103,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    # 'EXCEPTION_HANDLER':
-    # 'course.utils.custom_authentication_exception_handler',
+    # 'EXCEPTION_HANDLER': 'course.utils.custom_exception_handler'
 }
 # MIGRATIONS
 # ------------------------------------------------------------------------------

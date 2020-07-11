@@ -43,8 +43,8 @@ path\to\folder\team-195> cd tutor
 ### Install dependancies
 
 ```
-- pip install -r requirements/local.txt 
-- pip install -r requirements/base.txt 
+- pip install -r requirements/local.txt
+- pip install -r requirements/base.txt
 ```
 
 ### Database configurations
@@ -85,12 +85,12 @@ POST /users/tutors/register/
 
 ### Student's registration
 ```
-POST /users/students/register
+POST /users/students/register/
 ```
 
 #### Update student's record
 ```
-PUT /users/students/<int: student_id>
+PUT users/students/update/
 ```
 
 #### Gets all students' records
@@ -141,7 +141,7 @@ GET /courses/
 
 #### View a tutor and all courses he/she created
 ```
-GET /users/tutors/<int:tutor_id>
+GET /users/tutors/<int:tutor_id>/
 ```
 
 ### Makes a student to take a course

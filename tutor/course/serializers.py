@@ -4,7 +4,7 @@
 '''
 
 from rest_framework import serializers
-from .models import Course, Chapter, Grade
+from .models import Course, Chapter, Grade, Posts, Tutors, Comments
 from .validators import ValidateCourses
 
 
@@ -170,6 +170,10 @@ class CourseCreateSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     created = serializers.ReadOnlyField()
     chapter_set = ChapterCreateSerializer(read_only=True, many=True)
+    tutor = serializers.CharField(
+        source='tutor.username', read_only=True
+    )
+
     class Meta:
         model = Course
         fields = ['id', 'course_name', 'grade', 'description',
@@ -184,7 +188,11 @@ class CourseCreateSerializer(serializers.ModelSerializer):
                     "blank": "Please provide course description!"
                 }
             },
-
+            "grade": {
+                "error_messages": {
+                    "does_not_exist": "The grade class doesn't exist"
+                }
+            },
         }
 
     def validate(self, data):
@@ -217,6 +225,129 @@ class CourseCreateSerializer(serializers.ModelSerializer):
             )
         return data
 
+    def create(self, validated_data):
+    
+        '''
+            Adds  a new course
+        '''
+        # Gets the authenticated user instance from the request object
+        tutor_id = self.context.get("request").user.id
+        tutor_object = Tutors.objects.get(pk=tutor_id)
+
+        new_course = Course.objects.create(
+            **validated_data, tutor=tutor_object
+        )
+
+        return new_course
+
+
+class CommentsSerrializers(serializers.ModelSerializer):
+    """
+        A serializer to serialize the comments data
+        passed by the user to a post on a forum
+    """
+    user_name = serializers.CharField(
+        source='user_id.username', read_only=True
+    )
+    class Meta:
+        """
+            The model to be serialized and validation errors messages
+            of the fields.
+        """
+        model = Comments
+        fields = ['id', 'comment', 'user_name']
+        extra_kwargs = {
+            "comment": {
+                "error_messages": {
+                    "blank": "Please provide something to comment"
+                }
+            },
+        }
+
+    def create(self, validated_data):
+
+        '''
+            Adds a new comment to a post
+        '''
+        # Gets the authenticated user instance from the request object
+        user = self.context.get("request").user
+        # Gets the post instance from the request object
+        post = self.context.get('post')
+
+        new_comment = Comments.objects.create(
+            **validated_data, post_id=post, user_id=user
+        )
+
+        return new_comment
+
+    def update(self, instance, validated_data):
+
+        '''
+            Overrides update method of the model serializer
+            to update a comment's record.
+        '''
+        # Updates instance field
+        instance.comment = validated_data.get(
+            'comment'
+        )
+        # returns updated comment's instance
+        instance.save()
+        return instance
+
+
+class PostsSerrializers(serializers.ModelSerializer):
+    """
+        A serializer to serialize the massage data
+        passed by the user to the specific course forum section.
+    """
+    user_name = serializers.CharField(
+        source='user_id.username', read_only=True
+    )
+    comments_set = CommentsSerrializers(read_only=True, many=True)
+    class Meta:
+        """
+            The model to be serialized and validation errors messages
+            of the fields.
+        """
+        model = Posts
+        fields = ['id', 'post', 'user_name', 'comments_set']
+        extra_kwargs = {
+            "post": {
+                "error_messages": {
+                    "blank": "Please provide something to post"
+                }
+            },
+        }
+
+    def create(self, validated_data):
+
+        '''
+            Adds  a new post to the course forum
+        '''
+        # Gets the authenticated user instance from the request object
+        user = self.context.get("request").user
+        course = self.context.get('course_id')
+
+        new_post = Posts.objects.create(
+            **validated_data, user_id=user, course_id=course
+        )
+
+        return new_post
+
+    def update(self, instance, validated_data):
+
+        '''
+            Overrides update method of the model serializer
+            to updates a post's record.
+        '''
+        # Updates instance field
+        instance.post = validated_data.get(
+            'post'
+        )
+        # returns updated post's instance
+        instance.save()
+        return instance
+
 
 class CourseGetSerializer(serializers.ModelSerializer):
     '''
@@ -225,24 +356,25 @@ class CourseGetSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     created = serializers.ReadOnlyField()
     grade_name = serializers.CharField(source='grade.grade_name', read_only=True)
-    tutor = serializers.CharField(source='tutor.username', read_only=True)
+    tutor = serializers.CharField(source='tutor.user.username', read_only=True)
     chapters = serializers.SerializerMethodField()
+    posts_set = PostsSerrializers(read_only=True, many=True)
 
     class Meta:
         model = Course
         fields = ['id', 'course_name', 'grade_name', 'description',
-                  'created', 'tutor', 'chapters']
+                  'created', 'tutor', 'chapters', 'posts_set']
         extra_kwargs = {
             "course_name": {
                 "error_messages": {
                     "blank": "Please provide the course name!"
                 }
-            }, "description": {
+            },
+            "description": {
                 "error_messages": {
                     "blank": "Please provide course description!"
                 }
             },
-
         }
 
     def get_chapters(self, obj):
