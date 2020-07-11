@@ -58,5 +58,25 @@ class Posts(models.Model):
 
     def __str__(self):
         return "%s %s %s" % (
-            self.message, self.course_id, self.user_id
+            self.post, self.course_id, self.user_id
+            )
+
+
+class Comments(models.Model):
+    '''
+        A model to store forum's post's comments
+    '''
+    alphanumeric_characters = RegexValidator(
+        r'^[\w\W]+$', 'Only alphanumeric characters are allowed.'
+    )
+
+    comment = models.CharField(
+        max_length=500, validators=[alphanumeric_characters]
+    )
+    post_id = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s %s %s" % (
+            self.comment, self.post_id, self.user_id
             )

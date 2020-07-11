@@ -55,3 +55,15 @@ class PostNotFound(APIException):
     status_code = 404
     default_detail = 'Sorry the post dosen\'t exist'
     default_code = "post_not_found"
+
+
+class CommentNotFound(APIException):
+    
+    '''
+        This exception provide a good custom error message,
+        when a comment is not found.
+    '''
+
+    status_code = 404
+    default_detail = 'Sorry the comment dosen\'t exist'
+    default_code = "comment_not_found"

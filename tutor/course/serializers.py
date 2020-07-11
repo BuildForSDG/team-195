@@ -4,7 +4,7 @@
 '''
 
 from rest_framework import serializers
-from .models import Course, Chapter, Grade, Posts, Tutors
+from .models import Course, Chapter, Grade, Posts, Tutors, Comments
 from .validators import ValidateCourses
 
 
@@ -241,10 +241,10 @@ class CourseCreateSerializer(serializers.ModelSerializer):
         return new_course
 
 
-class PostsSerrializers(serializers.ModelSerializer):
+class CommentsSerrializers(serializers.ModelSerializer):
     """
-        A serializer to serialize the massage data
-        passed by the user to the specific course forum section.
+        A serializer to serialize the comments data
+        passed by the user to a post on a forum
     """
     user_name = serializers.CharField(
         source='user_id.username', read_only=True
@@ -254,8 +254,63 @@ class PostsSerrializers(serializers.ModelSerializer):
             The model to be serialized and validation errors messages
             of the fields.
         """
+        model = Comments
+        fields = ['id', 'comment', 'user_name']
+        extra_kwargs = {
+            "comment": {
+                "error_messages": {
+                    "blank": "Please provide something to comment"
+                }
+            },
+        }
+
+    def create(self, validated_data):
+
+        '''
+            Adds a new comment to a post
+        '''
+        # Gets the authenticated user instance from the request object
+        user = self.context.get("request").user
+        # Gets the post instance from the request object
+        post = self.context.get('post')
+
+        new_comment = Comments.objects.create(
+            **validated_data, post_id=post, user_id=user
+        )
+
+        return new_comment
+
+    def update(self, instance, validated_data):
+
+        '''
+            Overrides update method of the model serializer
+            to update a comment's record.
+        '''
+        # Updates instance field
+        instance.comment = validated_data.get(
+            'comment'
+        )
+        # returns updated comment's instance
+        instance.save()
+        return instance
+
+
+class PostsSerrializers(serializers.ModelSerializer):
+    """
+        A serializer to serialize the massage data
+        passed by the user to the specific course forum section.
+    """
+    user_name = serializers.CharField(
+        source='user_id.username', read_only=True
+    )
+    comments_set = CommentsSerrializers(read_only=True, many=True)
+    class Meta:
+        """
+            The model to be serialized and validation errors messages
+            of the fields.
+        """
         model = Posts
-        fields = ['id', 'post', 'user_name']
+        fields = ['id', 'post', 'user_name', 'comments_set']
         extra_kwargs = {
             "post": {
                 "error_messages": {

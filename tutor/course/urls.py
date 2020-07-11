@@ -32,6 +32,16 @@ urlpatterns = [
         'course_forum/course/<int:course_id>/post/<int:post_id>/edit/',
         views.PostsView.as_view({'put': 'update'})
     ),
+    # Comment on a post url
+    path(
+        'course_forum/course/<int:course_id>/post/<int:post_id>/comment/',
+        views.CommentsView.as_view({'post': 'create'})
+    ),
+    # Edit comment on a post url
+    path(
+        'course_forum/course/<int:course_id>/post/<int:post_id>/comment/<int:comment_id>/edit_comment/',
+        views.CommentsView.as_view({'put': 'update'})
+    ),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
