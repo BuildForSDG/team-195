@@ -23,12 +23,11 @@ from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 from student.views import StudentsView, StudentTakeCourseView
 from tutor.users.views import AllUsersView, TutorsView, LogoutView
-from course import views
 
 
 urlpatterns = [
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
-    path('logout/', LogoutView.as_view()),
+    path('users/logout/', LogoutView.as_view()),
     path('users/add/', AllUsersView.as_view()),
     path('users/tutors/register/', TutorsView.as_view()),
     path('users/tutors/<int:p_k>', TutorsView.as_view()),
