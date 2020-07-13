@@ -13,25 +13,24 @@ import PrivateRoute from "./common/PrivateRoute";
 import { Provider } from "react-redux";
 import store from "../store";
 
-class App extends Component {
-    render() {
-        return (
-            <Provider store={store}>
-                <Router>
-                    <Fragment>
-                        <Header />
-                        <div className="container">
-                            <Switch>
-                                <PrivateRoute exact path="/" component={Dashboard} />
-                                <Route exact path="/register" component={Register} />
-                                <Route exact path="/login" component={Login} />
-                            </Switch>
-                        </div>
-                    </Fragment>
-                </Router>
-            </Provider>
-        )
-    }
-}
+const App = () => {
+
+    return (
+        <Provider store={store}>
+            <Router>
+                <Fragment>
+                    <Header />
+                    <div className="container">
+                        <Switch>
+                            <PrivateRoute exact path="/" component={Dashboard} />
+                            <Route exact path="/register" component={Register} />
+                            <Route exact path="/login" component={Login} />
+                        </Switch>
+                    </div>
+                </Fragment>
+            </Router>
+        </Provider>
+    );
+};
 
 ReactDom.render(<App />, document.getElementById("app"));

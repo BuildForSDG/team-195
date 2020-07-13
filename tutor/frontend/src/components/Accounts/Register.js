@@ -12,20 +12,31 @@ class Register extends Component {
             username: "",
             password: "",
             password2: "",
-            is_staff: ""
+            is_staff: false
         }
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     };
     static propTypes() {
         register: PropTypes.func.isRequired;
         isAuthenticated: PropTypes.bool;
     }
 
-    onChange(e) { this.setState({ [e.target.name]: e.target.value }); }
-    onSubmit(e) {
-        e.preventDefaut();
-        console.log("submit")
+    handleChange(e) { this.setState({ [e.target.name]: e.target.value }); }
+    handleSubmit(e) {
+        event.preventDefault();
+        const { password, password2 } = this.state;
+        if (password != password2) {
+            alert("Passwords do not match")
+        }
+        else {
+            const { username, password, password2, is_staff } = this.state;
+            const newUser = {
+                username, password, password2, is_staff
+            }
+            this.props.register(newUser);
+        }
+
     };
     render() {
         const { username, password, password2, is_staff } = this.state;
@@ -33,7 +44,7 @@ class Register extends Component {
             <div className="col-md-6 m-auto">
                 <div className="card card-body mt-5">
                     <h2 className="text-center">Register</h2>
-                    <form onSubmit={this.onSubmit}>
+                    <form onSubmit={this.handleSubmit}>
 
                         <div className="form-group">
                             <label>Username</label>
@@ -42,7 +53,7 @@ class Register extends Component {
                                 className="form-control"
                                 placeholder="Username"
                                 name="username"
-                                onChange={this.onChange}
+                                onChange={this.handleChange}
                                 value={username}
                             />
                         </div>
@@ -55,7 +66,7 @@ class Register extends Component {
                                 className="form-control"
                                 placeholder="Enter password"
                                 name="password"
-                                onChange={this.onChange}
+                                onChange={this.handleChange}
                                 value={password}
                             />
                         </div>
@@ -67,19 +78,19 @@ class Register extends Component {
                                 className="form-control"
                                 placeholder="Confirm password"
                                 name="password2"
-                                onChange={this.onChange}
+                                onChange={this.handleChange}
                                 value={password2}
                             />
                         </div>
 
                         <div className="form-group">
-                            <label>Is Staff</label>
+                            <label>Is Staff?</label>
                             <input
-                                type="is_staff"
+                                type="checkbox"
                                 className="form-control"
                                 name="is_staff"
-                                onChange={this.onChange}
                                 value={is_staff}
+                                onChange={(e) => this.setState({ is_staff: !is_staff.value })}
                             />
                         </div>
 

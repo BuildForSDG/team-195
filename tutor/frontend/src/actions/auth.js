@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { USER_LOADING, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL } from "./types";
+import { USER_LOADING, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL } from "./types";
 
 //LOGIN USER
 export const login = (username, password) => dispatch => {
@@ -27,7 +27,7 @@ export const login = (username, password) => dispatch => {
 };
 
 //REGISTER USER
-export const register = ({ Username, password, confirm_password, is_staff }) => dispatch => {
+export const register = ({ username, password, password2, is_staff }) => dispatch => {
     //Headers
     const config = {
         headers: {
@@ -36,7 +36,7 @@ export const register = ({ Username, password, confirm_password, is_staff }) => 
     };
 
     //Request body
-    const body = JSON.stringify({ username, password, confirm_password, is_staff });
+    const body = JSON.stringify({ username, password, password2, is_staff });
 
     axios.post('/users/add/', body, config)
         .then(res => {
