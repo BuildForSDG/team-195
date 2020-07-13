@@ -5,6 +5,8 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from course.utils import TutorAuthentication
 from .serializers import TutorsSerializer, UsersSerializer
 from .serializers import Tutors
@@ -80,6 +82,36 @@ class TutorsView(APIView):
         serialized_tutor = TutorsSerializer(tutor)
 
         return Response(serialized_tutor.data, status=200)
+
+
+class SigninView(ObtainAuthToken):
+    """
+        This view log in users
+    """
+
+    def post(self, request, *args, **kwargs):
+        """
+            Logs in users and provides the user's id, username, is_staff
+            and  the token as response.
+        """
+        # Passes request body data and request object too to the serializer
+        serializer = self.serializer_class(
+            data=request.data,context={'request': request}
+        )
+        # Raises serializer exceptions in failed login
+        serializer.is_valid(raise_exception=True)
+        # If the user exists, saves the user object in user variable
+        user = serializer.validated_data['user']
+        # Generates the token
+        token, created = Token.objects.get_or_create(user=user)
+        # Provides the response to the user
+        return Response(
+            {
+                'token': token.key, 'user_id': user.pk,
+                'username': user.username, 'is_staff': user.is_staff
+            },
+            status=200
+        )
 
 
 class LogoutView(APIView):
