@@ -20,13 +20,12 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from rest_framework.authtoken.views import obtain_auth_token
 from student.views import StudentsView, StudentTakeCourseView
-from tutor.users.views import AllUsersView, TutorsView, LogoutView
+from tutor.users.views import AllUsersView, TutorsView, LogoutView, SigninView
 
 
 urlpatterns = [
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('api-token-auth/', SigninView.as_view(), name='api_token_auth'),
     path('users/logout/', LogoutView.as_view()),
     path('users/add/', AllUsersView.as_view()),
     path('users/tutors/register/', TutorsView.as_view()),
