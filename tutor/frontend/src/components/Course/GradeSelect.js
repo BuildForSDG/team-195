@@ -5,12 +5,6 @@ import { getGrades } from "../../actions/grades";
 import get from "lodash/get";
 import map from "lodash/map"
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-];
-
 
 class GradeSelect extends React.Component {
     constructor(props) {
