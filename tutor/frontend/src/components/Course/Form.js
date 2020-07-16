@@ -10,7 +10,6 @@ class Form extends Component {
         super(props)
         this.state = {
             course_name: "",
-            grade: "",
             description: "",
             tutor: ""
         }
@@ -25,14 +24,14 @@ class Form extends Component {
     handleChange(e) { this.setState({ [e.target.name]: e.target.value }); }
     onSubmit(e) {
         e.preventDefaut();
-        const { course_name, grade, description, tutor } = this.state;
+        const { course_name, description, tutor } = this.state;
         const course = { course_name, grade, description, tutor };
         this.props.addCourse(course);
     };
 
 
     render() {
-        const { course_name, grade, description, tutor } = this.state;
+        const { course_name, description, tutor } = this.state;
         return (
             <div className="card card-body mt-4 mb-4">
                 <h1>Add Course</h1>
