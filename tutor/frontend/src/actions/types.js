@@ -23,3 +23,8 @@ export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 //Register
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
+
+//Chapters
+export const GET_CHAPTERS = "GET_CHAPTERS";
+export const DELETE_CHAPTER = "DELETE_CHAPTER";
+export const ADD_CHAPTER = "ADD_CHAPTER";

@@ -4,7 +4,8 @@ import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom"
 
 import Header from "./Layout/Header";
 import Dashboard from "./Course/Dashboard";
-import GradeDashboard from "./Grade/GradeDashboard"
+import GradeDashboard from "./Grade/GradeDashboard";
+import ChapterDashboard from "./Chapter/ChapterDashboard";
 
 import Register from "./Accounts/Register";
 import Login from "./Accounts/Login";
@@ -22,7 +23,7 @@ const App = () => {
                     <Header />
                     <div className="container">
                         <Switch>
-                            <Route exact path="/" component={Dashboard} />
+                            <Route exact path="/" component={ChapterDashboard} />
                             <Route exact path="/register" component={Register} />
                             <Route exact path="/login" component={Login} />
                         </Switch>
