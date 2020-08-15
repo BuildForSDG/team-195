@@ -24,9 +24,7 @@ class GradeSelect extends React.Component {
     render() {
         const { selectedOption } = this.state;
         const { grades } = this.props;
-        console.log(grades, "First")
         const gradeList = map(grades, ({ id, grade_name }) => ({ value: id, label: grade_name }))
-        console.log(gradeList)
         return (
             <Select
                 value={selectedOption}

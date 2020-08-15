@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import ReactPlayer from "react-player";
 import { getChapters, deleteChapter } from "../../actions/chapters.js";
+import get from "lodash/get";
 
 
 class Chapters extends Component {
@@ -16,40 +18,36 @@ class Chapters extends Component {
     }
 
     render() {
+        const { chapters } = this.props;
+        const ChapterList = () => (
+            <ul>
+                {chapters.map(item => (
+                    <li key={item.id}>
+                        <div>{item.chapter_name}</div>
+                        <div><ReactPlayer
+                            className='react-player'
+                            url={item.content.url}
+                            width='100%'
+                            height='100%'
+                        /></div>
+                        <div>{item.course}</div>
+                    </li>
+                ))}
+            </ul>
+        );
+
         return (
             <Fragment>
                 <h1>Chapters</h1>
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Content</th>
-                            <th />
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.chapters.map(chapter => (
-                            <tr key={chapter.id}>
-                                <td>{chapter.chapter_name}</td>
-                                <td>{chapter.content}</td>
-                                <td><button onClick=
-                                    {this.props.deleteChapter.bind(this, chapter.id)}
-                                    className="btn btn-danger btn-sm">
-                                    {""}
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>))}
+                <ChapterList chapters={chapters} />
 
-                    </tbody>
-                </table>
             </Fragment>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    chapters: state.chapters.chapters
+    chapters: get(state.chapters, "chapters")
 })
 
 export default connect(mapStateToProps, { getChapters, deleteChapter })(Chapters);
